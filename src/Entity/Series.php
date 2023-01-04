@@ -223,40 +223,7 @@ class Series
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-
-    /**
-     * @return Collection<int, Genre>
-     */
-    public function getGenre(): Collection
-    {
-        return $this->genre;
-    }
-
-    /**
-     * @return Collection<int, Actor>
-     */
-    public function getActor(): Collection
-    {
-        return $this->actor;
-    }
-
-
-    /**
-     * @return Collection<int, Country>
-     */
-    public function getCountry(): Collection
-    {
-        return $this->country;
-    }
-
+    
     public function getPoster()
     {
         return $this->poster;
@@ -269,4 +236,9 @@ class Series
         return $this;
     }
 
+    public function showPoster(){
+        $poster = stream_get_contents($this->getPoster());
+        $poster = base64_encode($poster);
+        echo '<img src="data:poster/jpeg;base64,'.$poster.'"/>';
+    }
 }

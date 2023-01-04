@@ -169,23 +169,4 @@ class Episode
         return $this->user;
     }
 
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
-            $user->addEpisode($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->user->removeElement($user)) {
-            $user->removeEpisode($this);
-        }
-
-        return $this;
-    }
-
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\SeriesType;
@@ -25,16 +26,23 @@ class SeriesController extends AbstractController
             'series' => $series,
         ]);
     }
-    #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(Series $series, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
+    public function show(Series $series, EntityManagerInterface $entityManager, Season $season): Response
     {
         $render = $entityManager
             ->getRepository(Season::class)
             ->findBy(array('series'=>$series->getId()), array('number'=>'ASC'));
+        
+        $renderEpisode = $entityManager
+            ->getRepository(Episode::class)
+            ->findBy(array('season'=>$season->getId()), array());
+
+            
             
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $render,
+            'episode' => $renderEpisode
         ]);
     }
 }
