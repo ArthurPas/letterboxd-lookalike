@@ -52,7 +52,7 @@
             {% for series in series %}
                 <div class="col-2_4">
                     {{series.showPoster}}
-                    <a href="{{ path('app_series_show', {'id': series.id}) }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">{{ series.title }}</a>
+                    <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">{{ series.title }}</a>
                 </div>
             {% else %}
                 <tr>
