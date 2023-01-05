@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Episode
  *
  * @ORM\Table(name="episode", indexes={@ORM\Index(name="IDX_DDAA1CDA4EC001D1", columns={"season_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SeriesRepository")
  */
 class Episode
 {
@@ -159,6 +159,11 @@ class Episode
         $this->season = $season;
 
         return $this;
+    }
+
+    public function getSerie(): ?Series
+    {
+        return $this->getSeason()->getSeries();
     }
 
     /**

@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ series.id }}</td>
-            </tr>
-            <tr>
                 <th>Title</th>
                 <td>{{ series.title }}</td>
             </tr>
@@ -20,20 +16,24 @@
                 <td>{{ series.plot }}</td>
             </tr>
             <tr>
-                <th>Imdb</th>
-                <td>{{ series.imdb }}</td>
-            </tr>
-            <tr>
                 <th>Poster</th>
                 <td>{{ series.showPoster }}</td>
             </tr>
             <tr>
-                <th>Director</th>
-                <td>{{ series.director }}</td>
-            </tr>
-            <tr>
                 <th>YoutubeTrailer</th>
                 <td>{{ series.youtubeTrailer }}</td>
+            </tr>
+            <tr>
+                <th>Seasons</th>
+                    <td>
+                        <ul>
+                            {% for seasons in seasons %}
+                                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}">
+                                    {{ seasons.number }}
+                                    </a>
+                            {% endfor %}
+                        </ul>
+                    </td>
             </tr>
             <tr>
                 <th>Awards</th>
@@ -45,15 +45,17 @@
             </tr>
             <tr>
                 <th>YearEnd</th>
-                <td>{{ series.yearEnd }}</td>
+                <td>{{ series.YearEnd }}</td>
             </tr>
             <tr>
-                <th>Seasons</th>
-                    <td>
-                        {% for seasons in seasons %}
-                            {{ seasons.number }}
-                        {% endfor %}
-                    </td>
+            <th>Episodes</th>
+                
+                {% for episodes in episode %}
+                    <li>
+                    {{ episodes.title }}
+                    </li>
+                {% endfor %}
+                
             </tr>
         </tbody>
     </table>

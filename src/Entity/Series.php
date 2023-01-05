@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -223,6 +226,45 @@ class Series
 
         return $this;
     }
+    
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    public function setPoster($poster): self
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
+    
+    /**
+     * @return Collection<int, Country>
+     */
+    public function getCountry(): Collection
+    {
+        return $this->country;
+    }
+
+    public function addCountry(Country $country): self
+    {
+        if (!$this->country->contains($country)) {
+            $this->country->add($country);
+            $country->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        if ($this->country->removeElement($country)) {
+            $country->removeSeries($this);
+        }
+
+        return $this;
+    }
 
     /**
      * @return Collection<int, User>
@@ -232,12 +274,23 @@ class Series
         return $this->user;
     }
 
-    /**
-     * @return Collection<int, Genre>
-     */
-    public function getGenre(): Collection
+    public function addUser(User $user): self
     {
-        return $this->genre;
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+            $user->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->user->removeElement($user)) {
+            $user->removeSeries($this);
+        }
+
+        return $this;
     }
 
     /**
@@ -248,23 +301,48 @@ class Series
         return $this->actor;
     }
 
+    public function addActor(Actor $actor): self
+    {
+        if (!$this->actor->contains($actor)) {
+            $this->actor->add($actor);
+            $actor->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActor(Actor $actor): self
+    {
+        if ($this->actor->removeElement($actor)) {
+            $actor->removeSeries($this);
+        }
+
+        return $this;
+    }
 
     /**
-     * @return Collection<int, Country>
+     * @return Collection<int, Genre>
      */
-    public function getCountry(): Collection
+    public function getGenre(): Collection
     {
-        return $this->country;
+        return $this->genre;
     }
 
-    public function getPoster()
+    public function addGenre(Genre $genre): self
     {
-        return $this->poster;
+        if (!$this->genre->contains($genre)) {
+            $this->genre->add($genre);
+            $genre->addSeries($this);
+        }
+
+        return $this;
     }
 
-    public function setPoster($poster): self
+    public function removeGenre(Genre $genre): self
     {
-        $this->poster = $poster;
+        if ($this->genre->removeElement($genre)) {
+            $genre->removeSeries($this);
+        }
 
         return $this;
     }
