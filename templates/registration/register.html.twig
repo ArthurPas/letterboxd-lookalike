@@ -3,17 +3,46 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <style>
+        .container{
+            margin-top: 25vh;
+            background-color: black;
+            border-radius: 10px;
+            box-shadow: 0px 0px 50px 0px #c82333;
+            padding: 35px; 
+            color: rgb(200,200,200);
+        }
+        h1{
+            text-align: center;
+            color: white;
+        }
+        form div{
+            height: 55px;
+            display: flex;
+        }
+    </style>
 
+    <div class="container col-lg-offset-3 col-lg-3">
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.country) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
+        {{ form_row(registrationForm.name, {
+                    label: ' ', 'attr': {'placeholder' : "Nom", 'class' : "form-control"}
+                }) }}
 
-        <button type="submit" class="btn">Register</button>
+        {{ form_row(registrationForm.country, {
+                    label: ' ', 'attr': {'value' : "Pays de naissance", 'class' : "form-control", }
+        }) }}
+
+        {{ form_row(registrationForm.email, {
+                    label: ' ', 'attr': {'placeholder' : "Email", 'class' : "form-control"}
+                }) }}
+
+        {{ form_row(registrationForm.plainPassword, {
+                    label: ' ', 'attr': {'placeholder' : "Mot de passe" , 'class' : "form-control"}
+                }) }}
+
+        {{ form_row(registrationForm.agreeTerms, {label:'J\'ai lu et j\'accepte les termes et conditions.'}) }}
+
+        <button class="btn btn-lg btn-danger" type="submit">S'inscrire</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
