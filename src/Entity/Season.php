@@ -55,6 +55,11 @@ class Season
         return $this;
     }
 
+    public function getSeriesId(): ?int
+    {
+        return $this->series->getId();
+    }
+
     public function getSeries(): ?Series
     {
         return $this->series;
