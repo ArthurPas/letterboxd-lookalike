@@ -3,23 +3,62 @@
 {% block title %}Series index{% endblock %}
 
 {% block body %}
-    <h1>Series index</h1>
-
-    <table class="table">
-        <thead>
-        </thead>
-        <tbody>
-        {% for series in series %}
-            <tr>
-                <td>{{ series.title }}</td>
-                <td><a href="{{ path('app_series_show', {'id': series.id}) }}">{{ series.showPoster }}</a></td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+    <style>
+        .col-2_4,
+        .col-sm-2_4,
+        .col-md-2_4,
+        .col-lg-2_4,
+        .col-xl-2_4 {
+            width: 100%;
+            min-height: 1px;
+            display: flex;
+            flex-direction: column;
+        }
+        .col-2_4 {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 20%;
+            flex: 0 0 20%;
+            max-width: 20%;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+        .col-2_4 a{
+            text-align: center;
+            width: 300px;
+        }
+        img{
+            width: 300px;
+            height: 400px;
+        }
+        .contain{
+            margin-left: 5%;
+            margin-right: 5%;
+            padding: 15px;
+            padding-top: 5px;
+            padding-bottom: 15px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        h1 {
+            color: white;
+            margin: 30px;
+        }
+    </style>
+    <div class="contain">
+    <h1>Découvrir</h1>
+        <div class="row ligne_theme">
+            {% for series in series %}
+                <div class="col-2_4">
+                    {{series.showPoster}}
+                    <a href="{{ path('app_series_show', {'id': series.id}) }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">{{ series.title }}</a>
+                </div>
+            {% else %}
+                <tr>
+                    <td colspan="11">no records found</td>
+                </tr>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
