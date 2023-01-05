@@ -26,13 +26,13 @@
             <tr>
                 <th>Seasons</th>
                     <td>
-                        <select>
+                        <ul>
                             {% for seasons in seasons %}
-                                <option>
-                                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}">{{ seasons.number }}</a>
-                                </option>
+                                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}">
+                                    {{ seasons.number }}
+                                    </a>
                             {% endfor %}
-                        </select>
+                        </ul>
                     </td>
             </tr>
             <tr>

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Episode
  *
  * @ORM\Table(name="episode", indexes={@ORM\Index(name="IDX_DDAA1CDA4EC001D1", columns={"season_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SeriesRepository")
  */
 class Episode
 {
@@ -161,12 +161,36 @@ class Episode
         return $this;
     }
 
+    public function getSerie(): ?Series
+    {
+        return $this->getSeason()->getSeries();
+    }
+
     /**
      * @return Collection<int, User>
      */
     public function getUser(): Collection
     {
         return $this->user;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+            $user->addEpisode($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->user->removeElement($user)) {
+            $user->removeEpisode($this);
+        }
+
+        return $this;
     }
 
 }

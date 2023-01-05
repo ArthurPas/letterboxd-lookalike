@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -240,5 +243,113 @@ class Series
         $poster = stream_get_contents($this->getPoster());
         $poster = base64_encode($poster);
         echo '<img src="data:poster/jpeg;base64,'.$poster.'"/>';
+    }
+
+    /**
+     * @return Collection<int, Country>
+     */
+    public function getCountry(): Collection
+    {
+        return $this->country;
+    }
+
+    public function addCountry(Country $country): self
+    {
+        if (!$this->country->contains($country)) {
+            $this->country->add($country);
+            $country->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        if ($this->country->removeElement($country)) {
+            $country->removeSeries($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+            $user->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->user->removeElement($user)) {
+            $user->removeSeries($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Actor>
+     */
+    public function getActor(): Collection
+    {
+        return $this->actor;
+    }
+
+    public function addActor(Actor $actor): self
+    {
+        if (!$this->actor->contains($actor)) {
+            $this->actor->add($actor);
+            $actor->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActor(Actor $actor): self
+    {
+        if ($this->actor->removeElement($actor)) {
+            $actor->removeSeries($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Genre>
+     */
+    public function getGenre(): Collection
+    {
+        return $this->genre;
+    }
+
+    public function addGenre(Genre $genre): self
+    {
+        if (!$this->genre->contains($genre)) {
+            $this->genre->add($genre);
+            $genre->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGenre(Genre $genre): self
+    {
+        if ($this->genre->removeElement($genre)) {
+            $genre->removeSeries($this);
+        }
+
+        return $this;
     }
 }
