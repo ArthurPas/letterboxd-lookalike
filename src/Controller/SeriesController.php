@@ -38,7 +38,8 @@ class SeriesController extends AbstractController
         $nb=$repository->findNbSerie();
         $dixSeries = [];
         for($i=0;$i<10;$i++){
-            array_push($dixSeries,$series[rand(0,$nb)]);
+            
+            array_push($dixSeries,$series[rand(0,$nb-1)]);
         }
         return $this->render('series/index.html.twig', [
             'series' => $dixSeries,
