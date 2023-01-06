@@ -3,63 +3,80 @@
 {% block title %}Series{% endblock %}
 
 {% block body %}
-    <h1>Series</h1>
+    <style>
+        *{
+            color: white;
+        }
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Title</th>
-                <td>{{ series.title }}</td>
-            </tr>
-            <tr>
-                <th>Plot</th>
-                <td>{{ series.plot }}</td>
-            </tr>
-            <tr>
-                <th>Poster</th>
-                <td>{{ series.showPoster }}</td>
-            </tr>
-            <tr>
-                <th>YoutubeTrailer</th>
-                <td>{{ series.youtubeTrailer }}</td>
-            </tr>
-            <tr>
-                <th>Seasons</th>
-                    <td>
-                        <ul>
-                            {% for seasons in seasons %}
-                                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}">
-                                    {{ seasons.number }}
-                                    </a>
-                            {% endfor %}
-                        </ul>
-                    </td>
-            </tr>
-            <tr>
-                <th>Awards</th>
-                <td>{{ series.awards }}</td>
-            </tr>
-            <tr>
-                <th>YearStart</th>
-                <td>{{ series.yearStart }}</td>
-            </tr>
-            <tr>
-                <th>YearEnd</th>
-                <td>{{ series.YearEnd }}</td>
-            </tr>
-            <tr>
-            <th>Episodes</th>
+        .contain{
+            margin-left: 5%;
+            margin-right: 5%;
+            padding: 15px;
+            padding-top: 5px;
+            padding-bottom: 15px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: white;
+            margin: 30px;
+        }
+        
+        .ecart {
+            margin-left : 30px;
+        }
+
+        img{
+            width: 300px;
+            height: 400px;
+        }
+    </style>
+
+    <div class="contain">
+        <h1>{{ series.title }}</h1>
+        <div class="ecart">
+
+            <p> Série • {{ series.yearStart }} - {{ series.YearEnd }} • {{ series.awards }}</p>
+            <div class="media">
+                {{ series.showPoster }}
                 
+                {% set youtubeLink = series.YoutubeTrailer|split('v=') %}
+                        <iframe width="100%" height="400" src= "https://www.youtube.com/embed/{{youtubeLink[1]}}" title="YouTube" frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin-left: 25px;"></iframe>
+            </div>
+
+                <br>
+            <div class="description">
+                {{ series.plot }}
+            </div>
+
+                <br>
+
+            <h2> Saisons </h2>
+            
+                {% for seasons in seasons %}
+                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">
+                        {{ seasons.number }}
+                    </a>
+                {% endfor %}                
+                
+            <br>
+            <br>
+
+            <h2> Episodes </h2>
+
+            <ol>  
                 {% for episodes in episode %}
                     <li>
-                    {{ episodes.title }}
+                        {{ episodes.title }}
                     </li>
                 {% endfor %}
-                
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_series_index') }}">back to list</a>
-
+            </ol>  
+        </div>
+        <a href="{{ path('app_series_index') }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">Retour</a>
+        
+    </div>
 {% endblock %}
