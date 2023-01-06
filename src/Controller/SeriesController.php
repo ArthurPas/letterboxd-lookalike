@@ -6,6 +6,8 @@ use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\SeriesType;
+use App\Repository\EpisodeRepository;
+use App\Repository\RealSeriesRepository;
 use App\Repository\SeriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['POST','GET'])]
-    public function index(ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
+    public function index(ManagerRegistry $doctrine,RealSeriesRepository $repository, EntityManagerInterface $entityManager): Response
     {
         $page = 0;
         if(isset($_GET['nb'])){
@@ -28,23 +30,29 @@ class SeriesController extends AbstractController
         }
         $series = $entityManager
             ->getRepository(Series::class)
-            ->findBy([],[], 10, $page*10);
-
+            //->findBy([],[], 10, $page*10);
+            ->findALl();
+        
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Series::class);
+        $nb=$repository->findNbSerie();
+        $dixSeries = [];
+        for($i=0;$i<10;$i++){
+            array_push($dixSeries,$series[rand(0,$nb)]);
+        }
         return $this->render('series/index.html.twig', [
-            'series' => $series,
+            'series' => $dixSeries,
+            'nb' => $nb
+
         ]);
     }
     
     #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
-    public function show(ManagerRegistry $doctrine,SeriesRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
+    public function show(ManagerRegistry $doctrine,EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     {
         $render = $entityManager
             ->getRepository(Season::class)
             ->findBy(array('series'=>$series->getId()), array('number'=>'ASC'));
-        
-        $renderEpisode = $entityManager
-            ->getRepository(Episode::class)
-            ->findBy(array('season'=>$season->getNumber()), array());
 
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);

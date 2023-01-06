@@ -14,12 +14,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Episode[]    findAll()
  * @method Episode[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SeriesRepository extends ServiceEntityRepository
+class EpisodeRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Episode::class);
-    }
     public function findEpisodes($IdSerie, $nb)
     {
         
@@ -34,7 +30,11 @@ class SeriesRepository extends ServiceEntityRepository
         ->getResult();
         
     }
-    /*
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Episode::class);
+    }
+/*
     public function save(Episode $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -52,7 +52,7 @@ class SeriesRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
- */
+*/
 //    /**
 //     * @return Episode[] Returns an array of Episode objects
 //     */
