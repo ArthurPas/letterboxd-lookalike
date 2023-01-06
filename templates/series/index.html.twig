@@ -60,7 +60,7 @@
                     <td colspan="11">no records found</td>
                 </tr>
             {% endfor %}
-            {% for nb in 0..20 %}
+            {% for nb in 0.. nb / 10 %}
                 <form id="pagination" method="GET">
                     <label>{{ nb }}</label>
                     <input onClick='document.getElementById("pagination").submit()' type="checkbox" name="nb" value = {{nb}}/>
