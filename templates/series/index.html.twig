@@ -49,20 +49,21 @@
     <div class="contain">
     <h1>Découvrir</h1>
         <div class="row ligne_theme">
-            {% set indice = 0 %}
             {% for series in series %}
-                {% if indice < 10 %}
                     <div class="col-2_4">
                         {{series.showPoster}}
                         <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">{{ series.title }}</a>
                     </div>
-                    {% set indice = indice+1 %}
-                {% endif %}
             {% else %}
                 <tr>
                     <td colspan="11">no records found</td>
                 </tr>
             {% endfor %}
+            {% set nb = 0 %}
+                <form id="pagination" method="GET">
+                    <input type="hidden" name="nb" value = {{ nb + 1 }}/>
+                <input type="submit">
+                </form>
         </div>
     </div>
 {% endblock %}
