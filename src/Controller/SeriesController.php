@@ -17,12 +17,18 @@ use Doctrine\Persistence\ManagerRegistry;
 #[Route('/series')]
 class SeriesController extends AbstractController
 {
-    #[Route('/', name: 'app_series_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    #[Route('/', name: 'app_series_index', methods: ['POST','GET'])]
+    public function index(ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
     {
+        $page = 0;
+        if(isset($_GET['nb'])){
+            $page = $_GET['nb'];
+            $page = intval(trim($page,"%2F"));
+
+        }
         $series = $entityManager
             ->getRepository(Series::class)
-            ->findAll();
+            ->findBy([],[], 10, $page*10);
 
         return $this->render('series/index.html.twig', [
             'series' => $series,

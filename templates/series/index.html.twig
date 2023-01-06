@@ -51,15 +51,22 @@
     <h1>Découvrir</h1>
         <div class="row ligne_theme">
             {% for series in series %}
-                <div class="col-2_4">
-                    {{series.showPoster}}
-                    <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">{{ series.title }}</a>
-                </div>
+                    <div class="col-2_4">
+                        {{series.showPoster}}
+                        <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">{{ series.title }}</a>
+                    </div>
             {% else %}
                 <tr>
                     <td colspan="11">no records found</td>
                 </tr>
             {% endfor %}
+            {% for nb in 0..20 %}
+                <form id="pagination" method="GET">
+                    <label>{{ nb }}</label>
+                    <input onClick='document.getElementById("pagination").submit()' type="checkbox" name="nb" value = {{nb}}/>
+
+            {% endfor %}
+                </form>
         </div>
     </div>
 {% endblock %}
