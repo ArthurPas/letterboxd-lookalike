@@ -46,6 +46,12 @@
             color: white;
             margin: 30px;
         }
+
+        form{
+           margin-left : 30px; 
+        }
+
+
     </style>
     <div class="contain">
     <h1>Découvrir</h1>
@@ -60,11 +66,10 @@
                     <td colspan="11">no records found</td>
                 </tr>
             {% endfor %}
-            {% for nb in 0..20 %}
                 <form id="pagination" method="GET">
-                    <label>{{ nb }}</label>
-                    <input onClick='document.getElementById("pagination").submit()' type="checkbox" name="nb" value = {{nb}}/>
-
+            {% for nb in 0..20 %}
+                    <label class="btn btn-secondary" for="option1{{nb}}">{{nb + 1 }}</label>   
+                    <input type="radio" style="display: none;" onClick='document.getElementById("pagination").submit()' name="nb" value={{nb}} class="btn-check" id="option1{{nb}}"/>
             {% endfor %}
                 </form>
         </div>
