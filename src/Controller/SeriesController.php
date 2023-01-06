@@ -23,6 +23,8 @@ class SeriesController extends AbstractController
         $page = 0;
         if(isset($_GET['nb'])){
             $page = $_GET['nb'];
+            $page = intval(trim($page,"%2F"));
+
         }
         $series = $entityManager
             ->getRepository(Series::class)
