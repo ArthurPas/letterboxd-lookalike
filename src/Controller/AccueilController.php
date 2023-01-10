@@ -31,4 +31,5 @@ class AccueilController extends AbstractController
             'series' => $dixSeries,
         ]);
     }
+    
 }
