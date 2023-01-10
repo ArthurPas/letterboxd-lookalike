@@ -39,7 +39,7 @@
         <h1>{{ series.title }}</h1>
         <div class="ecart">
 
-            <p> Série • {{ series.yearStart }} - {{ series.YearEnd }} • {{ series.awards }}</p>
+            <p> Série • {{ series.yearStart }} - {{ series.YearEnd }} • {{ series.awards }} • <a href="https://www.imdb.com/title/{{series.imdb}}">Lien IMDB</a>
             <div class="media">
                 {{ series.showPoster }}
                 
@@ -58,7 +58,7 @@
             <h2> Saisons </h2>
             
                 {% for seasons in seasons %}
-                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">
+                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}" class="btn btn-secondary btn-lg" role="button">
                         {{ seasons.number }}
                     </a>
                 {% endfor %}                
