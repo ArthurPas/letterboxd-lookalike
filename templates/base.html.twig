@@ -170,6 +170,11 @@
                             <a class="nav-link scroll-link" href="{{path('app_login')}}" id="connexion-clr">Connexion</a>
                         </li>
                     {% endif %}
+                    {% if is_granted('IS_IMPERSONATOR') %}
+                        <li class="nav-item">
+                            <a href="{{ impersonation_exit_path(path('app_user_index') ) }}">Arrêter d'incarner</a>
+                        </li>
+                    {% endif %}
                     </ul>
                 </div>
             </div>
