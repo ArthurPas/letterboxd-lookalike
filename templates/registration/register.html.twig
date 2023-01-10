@@ -49,6 +49,10 @@
         {{ form_row(registrationForm.plainPassword, {
                     label: ' ', 'attr': {'placeholder' : "Mot de passe" , 'class' : "form-control"}
                 }) }}
+        
+        {{ form_row(registrationForm.captcha, {
+                    label: ' ', 'attr': {'class' : "form-control"}
+                }) }}
 
         {{ form_row(registrationForm.agreeTerms, {label:'J\'ai lu et j\'accepte les termes et conditions.'}) }}
 
