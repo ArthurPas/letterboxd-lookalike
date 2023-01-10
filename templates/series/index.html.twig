@@ -62,6 +62,17 @@
     </style>
     <div class="contain">
     <h1>Découvrir</h1>
+
+    <form action="" method="GET">
+            <label>nom: </label>
+            <input type="text" name="initiale"/>
+            <label>date: </label>
+            <input type="text" name="annee"/>
+            <label>genre</label>
+            <input type="text" name="genre"/>
+            <input type="submit"/>
+    </form>
+
         <div class="row ligne_theme">
             {% for series in series %}
                     <div class="col-2_4">

@@ -29,9 +29,62 @@ class SeriesController extends AbstractController
             $page = $page % $nb;
 
         }
+
+        if(isset($_GET['initiale']) || isset($_GET['annee'])){
+            $initiale = $_GET['initiale'];
+            $annee = $_GET['annee'];
+            $seriesCherchees = $entityManager
+            ->getRepository(Series::class)
+            ->rechercheSansGenre($initiale,$annee);
+
+        
+            $em = $doctrine->getManager();
+            $nb=$repository->findNbSerie();
+            $repository = $em->getRepository(Series::class);
+
+            return $this->render('series/index.html.twig', [
+                'series' => $seriesCherchees,
+                'nb' => $nb
+        ]);
+            
+        }
+        if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre'])){
+            $initiale = $_GET['initiale'];
+            $annee = $_GET['annee'];
+            $genre = $_GET['genre'];
+            $seriesCherchees = $entityManager
+            ->getRepository(Series::class)
+            ->rechercheAvecGenre($initiale,$annee,$genre);
+
+        
+            $em = $doctrine->getManager();
+            $nb=$repository->findNbSerie();
+            $repository = $em->getRepository(Series::class);
+
+            return $this->render('series/index.html.twig', [
+                'series' => $seriesCherchees,
+                'nb' => $nb
+        ]);
+            
+        }
+        
+
         $series = $entityManager
             ->getRepository(Series::class)
-            ->findBy([],[], 10, $page*10);
+            //->findBy([],[], 10, $page*10);
+            ->findALl();
+        
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Series::class);
+        $nb=$repository->findNbSerie();
+        $dixSeries = [];
+
+        
+
+        for($i=0;$i<10;$i++){
+            
+            array_push($dixSeries,$series[rand(0,$nb-1)]);
+        }
         return $this->render('series/index.html.twig', [
             'series' => $series,
             'nb' => $nb
@@ -59,5 +112,7 @@ class SeriesController extends AbstractController
             'episode' => $episode
         ]);
     }
+
+
     
 }
