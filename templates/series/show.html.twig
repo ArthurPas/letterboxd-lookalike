@@ -39,7 +39,16 @@
         <h1>{{ series.title }}</h1>
         <div class="ecart">
 
-            <p> Série • {{ series.yearStart }} - {{ series.YearEnd }} • {{ series.awards }}</p>
+            <p> Série • 
+            {% for genre in series.genre %} 
+                {{ genre.name }} 
+            {% endfor %} 
+            • {{ series.yearStart }} 
+            {% if series.YearEnd is not null %} 
+                - {{ series.YearEnd }} 
+            {% endif %} 
+            • {{ series.awards }}</p>
+            
             <div class="media">
                 {{ series.showPoster }}
                 
@@ -54,9 +63,6 @@
             </div>
 
                 <br>
-                {% for genre in series.genre %}
-                    {{ genre.name }}
-                {% endfor %}
 
             <h2> Saisons </h2>
             
