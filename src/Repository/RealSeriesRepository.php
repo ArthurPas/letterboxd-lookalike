@@ -30,6 +30,7 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getSingleScalarResult();
         
     }
+
 /*
     public function save(Series $entity, bool $flush = false): void
     {
