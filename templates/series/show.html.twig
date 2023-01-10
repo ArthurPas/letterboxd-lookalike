@@ -38,7 +38,6 @@
     <div class="contain">
         <h1>{{ series.title }}</h1>
         <div class="ecart">
-
             <p> Série • 
             {% for genre in series.genre %} 
                 {{ genre.name }} 
@@ -48,7 +47,7 @@
                 - {{ series.YearEnd }} 
             {% endif %} 
             • {{ series.awards }}</p>
-            
+            • <a href="https://www.imdb.com/title/{{series.imdb}}">Lien IMDB</a>
             <div class="media">
                 <img src={{path('app_series_poster',{'id':series.id})}}>
                 
@@ -67,7 +66,7 @@
             <h2> Saisons </h2>
             
                 {% for seasons in seasons %}
-                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">
+                    <a href="{{ path('app_series_show', {id : series.id, season : seasons.number})}}" class="btn btn-secondary btn-lg" role="button">
                         {{ seasons.number }}
                     </a>
                 {% endfor %}                
