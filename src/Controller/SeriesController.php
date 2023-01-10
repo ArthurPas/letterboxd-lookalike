@@ -24,14 +24,6 @@ class SeriesController extends AbstractController
         $page = 0;
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Series::class);
-        $nb=$repository->findNbSerie();
-        if(isset($_GET['nb'])){
-            $page = $_GET['nb'];
-            $page = intval(trim($page,"%2F"));
-            $page = $page % $nb;
-
-        }
-
         if(isset($_GET['initiale']) || isset($_GET['annee'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
@@ -41,7 +33,6 @@ class SeriesController extends AbstractController
 
         
             $em = $doctrine->getManager();
-            $nb=$repository->findNbSerie();
             $repository = $em->getRepository(Series::class);
             $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -50,7 +41,6 @@ class SeriesController extends AbstractController
             );
             return $this->render('series/index.html.twig', [
                 'series' => $seriesAAfficher,
-                'nb' => $nb
         ]);
             
         }
@@ -73,7 +63,6 @@ class SeriesController extends AbstractController
             );
             return $this->render('series/index.html.twig', [
                 'series' => $seriesAAfficher,
-                'nb' => $nb
         ]);
             
         }
@@ -83,7 +72,6 @@ class SeriesController extends AbstractController
 
         $series = $entityManager
             ->getRepository(Series::class)
-            //->findBy([],[], 10, $page*10);
             ->findALl();
         
         $em = $doctrine->getManager();
@@ -108,7 +96,6 @@ class SeriesController extends AbstractController
         return new Response(stream_get_contents($series->getPoster()),200,array('Content-type'=>'image/jpeg'));
     }
     #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
-    public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     {
         $seasons = $entityManager

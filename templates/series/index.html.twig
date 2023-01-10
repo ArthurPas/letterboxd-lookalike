@@ -84,12 +84,7 @@
                     <td colspan="11">no records found</td>
                 </tr>
             {% endfor %}
-                <form id="pagination" method="GET">
-            {% for nb in 1.. nb / 10 %}
-                    <label class="btn btn-secondary" for="option1{{nb}}">{{nb}}</label>
-                    <input type="radio" style="display: none;" onClick='document.getElementById("pagination").submit()' name="nb" value={{nb}} class="btn-check" id="option1{{nb}}"/>
-            {% endfor %}
-                </form>
+              {{ knp_pagination_render(series) }}
         </div>
     </div>
 {% endblock %}
