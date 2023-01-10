@@ -42,12 +42,13 @@
             {% for genre in series.genre %} 
                 {{ genre.name }} 
             {% endfor %} 
+            • <a href="https://www.imdb.com/title/{{series.imdb}}">Page officielle</a>
             • {{ series.yearStart }} 
             {% if series.YearEnd is not null %} 
                 - {{ series.YearEnd }} 
             {% endif %} 
-            • {{ series.awards }}</p>
-            • <a href="https://www.imdb.com/title/{{series.imdb}}">Lien IMDB</a>
+            • {{ series.awards }}
+            </p>
             <div class="media">
                 <img src={{path('app_series_poster',{'id':series.id})}}>
                 
