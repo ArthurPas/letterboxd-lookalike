@@ -23,13 +23,16 @@ class SeriesController extends AbstractController
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Series::class);
         $nb=$repository->findNbSerie();
+        $genres = $entityManager
+        ->getRepository(Series::class)
+        ->getAllGenre();
         if(isset($_GET['nb'])){
             $page = $_GET['nb'];
             $page = intval(trim($page,"%2F"));
             $page = $page % $nb;
 
         }
-
+        /*
         if(isset($_GET['initiale']) || isset($_GET['annee'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
@@ -44,17 +47,23 @@ class SeriesController extends AbstractController
 
             return $this->render('series/index.html.twig', [
                 'series' => $seriesCherchees,
-                'nb' => $nb
+                'nb' => $nb,
+                'genre' => $genres
         ]);
             
         }
+        */
         if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
             $genre = $_GET['genre'];
+            
+            $idGenre = $entityManager
+            ->getRepository(Series::class)
+            ->genreVersId($genre);
             $seriesCherchees = $entityManager
             ->getRepository(Series::class)
-            ->rechercheAvecGenre($initiale,$annee,$genre);
+            ->rechercheAvecGenre($initiale,$annee,$idGenre);
 
         
             $em = $doctrine->getManager();
@@ -63,7 +72,8 @@ class SeriesController extends AbstractController
 
             return $this->render('series/index.html.twig', [
                 'series' => $seriesCherchees,
-                'nb' => $nb
+                'nb' => $nb,
+                'genre' => $genres
         ]);
             
         }
@@ -71,7 +81,6 @@ class SeriesController extends AbstractController
 
         $series = $entityManager
             ->getRepository(Series::class)
-            //->findBy([],[], 10, $page*10);
             ->findALl();
         
         $em = $doctrine->getManager();
@@ -87,7 +96,8 @@ class SeriesController extends AbstractController
         }
         return $this->render('series/index.html.twig', [
             'series' => $series,
-            'nb' => $nb
+            'nb' => $nb,
+            'genre' => $genres
         ]);
     }
     #[Route('/poster/{id}', name: 'app_series_poster', methods: ['GET'])]
