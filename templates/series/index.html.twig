@@ -96,7 +96,11 @@
             <label>date: </label>
             <input type="text" name="annee"/>
             <label>genre</label>
-            <input type="text" name="genre"/>
+            <select name="genre">
+                {% for genres in genre %}
+                <option value="{{ genres.name }}"> {{ genres.name }} </option>
+                {% endfor %}
+            </select>
             <input type="submit"/>
     </form>
 

@@ -51,6 +51,26 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult(); 
         return $query;
     }
+    public function getAllGenre(){
+        $query= $this->createQueryBuilder('s')
+        ->join('s.genre', 'g')
+        ->select('g.name')
+        ->groupBy('g.name')
+        ->getQuery()
+        ->getResult(); 
+        return $query;
+    }
+    public function genreVersId($genre){
+        $query= $this->createQueryBuilder('s')
+        ->join('s.genre', 'g')
+        ->select('g.id')
+        ->where('g.name = :g')
+        ->groupBy('g.id')
+        ->setParameters(array('g'=>$genre))
+        ->getQuery()
+        ->getResult();
+        return $query;
+    }
 /*
     public function save(Series $entity, bool $flush = false): void
     {
