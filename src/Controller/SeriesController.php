@@ -122,7 +122,4 @@ class SeriesController extends AbstractController
             'episode' => $episode
         ]);
     }
-
-
-    
 }
