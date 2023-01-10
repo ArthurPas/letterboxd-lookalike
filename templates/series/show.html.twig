@@ -54,6 +54,9 @@
             </div>
 
                 <br>
+                {% for genre in series.genre %}
+                    {{ genre.name }}
+                {% endfor %}
 
             <h2> Saisons </h2>
             
