@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Series catalogue{% endblock %}
+{% block title %}Series index{% endblock %}
 
 {% block body %}
     <style>
@@ -50,29 +50,15 @@
         form{
            margin-left : 30px; 
         }
-
-        #series-clr{
-            color: #c82333;
+        #accueil-clr{
+            color:#c82333;
         }
-            
-        #series-clr:hover{
-            font-weight: bold;
+        #accueil-clr:hover{
+            font-weight:bold;
         }
-
     </style>
     <div class="contain">
-    <h1>Découvrir</h1>
-
-    <form action="" method="GET">
-            <label>nom: </label>
-            <input type="text" name="initiale"/>
-            <label>date: </label>
-            <input type="text" name="annee"/>
-            <label>genre</label>
-            <input type="text" name="genre"/>
-            <input type="submit"/>
-    </form>
-
+    <h1>Accueil</h1>
         <div class="row ligne_theme">
             {% for series in series %}
                     <div class="col-2_4">
@@ -84,12 +70,6 @@
                     <td colspan="11">no records found</td>
                 </tr>
             {% endfor %}
-                <form id="pagination" method="GET">
-            {% for nb in 1.. nb / 10 %}
-                    <label class="btn btn-secondary" for="option1{{nb}}">{{nb}}</label>
-                    <input type="radio" style="display: none;" onClick='document.getElementById("pagination").submit()' name="nb" value={{nb}} class="btn-check" id="option1{{nb}}"/>
-            {% endfor %}
-                </form>
         </div>
     </div>
 {% endblock %}
