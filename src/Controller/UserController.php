@@ -17,15 +17,9 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET', 'POST'])]
     public function index(ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
     {
-        $users = $entityManager
-            ->getRepository(User::class)
-            ->findBy([], ['registerDate'=>'desc']);
-        
-        if (isset($_POST['mail'])){
-            $em = $doctrine->getManager();
-            $repository = $em->getRepository(User::class);
-            $users = $repository->findUser($_POST['mail']);
-        }
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(User::class);
+        $users = $repository->findUser($_POST['mail']);
 
         return $this->render('user/index.html.twig', [
             'users' => $users,
