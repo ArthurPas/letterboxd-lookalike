@@ -38,10 +38,18 @@
     <div class="contain">
         <h1>{{ series.title }}</h1>
         <div class="ecart">
-
-            <p> Série • {{ series.yearStart }} - {{ series.YearEnd }} • {{ series.awards }} • <a href="https://www.imdb.com/title/{{series.imdb}}">Lien IMDB</a>
+            <p> Série • 
+            {% for genre in series.genre %} 
+                {{ genre.name }} 
+            {% endfor %} 
+            • {{ series.yearStart }} 
+            {% if series.YearEnd is not null %} 
+                - {{ series.YearEnd }} 
+            {% endif %} 
+            • {{ series.awards }}</p>
+            • <a href="https://www.imdb.com/title/{{series.imdb}}">Lien IMDB</a>
             <div class="media">
-                {{ series.showPoster }}
+                <img src={{path('app_series_poster',{'id':series.id})}}>
                 
                 {% set youtubeLink = series.YoutubeTrailer|split('v=') %}
                         <iframe width="100%" height="400" src= "https://www.youtube.com/embed/{{youtubeLink[1]}}" title="YouTube" frameborder="0" 

@@ -3,22 +3,18 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-
-
-
-
     <style>
-    * {
-        color: white;
-    }
+        * {
+            color: white;
+        }
 
-    .user-title {
-        padding-top: 20px;
-        padding-bottom: 20px;
-        padding-left: 20px;
-    }
+        .user-title {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 20px;
+        }
 
-    .contain{
+        .contain{
             margin-left: 5%;
             margin-right: 5%;
             padding: 15px;
@@ -27,49 +23,50 @@
             border-radius: 5px;
             background-color: rgba(0,0,0,0.5);
         }
-
+        
+        #utilisateurs-clr{
+            color: #c82333;
+        }
+            
+        #utilisateurs-clr:hover{
+            font-weight: bold;
+        }
     </style>
-
-
-
-
-
-
-
     <div class="contain">
-    <h1 class="user-title">Liste des utilisateurs</h1>
+        <h1 class="user-title">Liste des utilisateurs</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Date d'inscription</th>
-                <th>Admin</th>
-                <th>Pays</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td><b>{{ user.name }}</b></td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.admin ? 'Yes' : 'No' }}</td>
-                <td>{{ user.country }}</td>
-                <td><button type"button" class="btn btn-warning">Incarner profil</button></td>
-                <td><button type"button" class="btn btn-primary">Éditer</button></td>
-            </tr>
-    
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Date d'inscription</th>
+                    <th>Admin</th>
+                    <th>Pays</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td><b>{{ user.name }}</b></td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ user.admin ? 'Yes' : 'No' }}</td>
+                    <td>{{ user.country }}</td>
+                    <td><a href="{{ path('app_series_index', {'_switch_user': user.email}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Incarner</a></td>
+                    <td><button type"button" class="btn btn-primary">Éditer</button></td>
+                </tr>
+        
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
