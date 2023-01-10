@@ -12,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Gregwar\CaptchaBundle\Type\CaptchaType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -21,6 +22,9 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class)
             ->add('name')
             ->add('country')
+            ->add('captcha', CaptchaType::class, array(
+                'invalid_message' => 'Captcha invalide',
+            ))
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
