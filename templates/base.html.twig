@@ -176,29 +176,7 @@
         </nav>
         <br>
         <br>
-        <br>
-    {#
-        <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand">Rametflix</a>
-            {% if app.user %}
-                <div>
-                    {% if app.user.admin =='Yes' %}
-                        <a href="{{path('app_user_index')}}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Accéder à la liste des utilisateurs</a>
-                    {% endif %}
-                    <a href="{{path('app_series_index')}}" class="btn btn-danger btn-lg" role="button" aria-disabled="true">Accéder aux séries</a>
-                        
-                    <a href="{{path('app_logout')}}" class="btn btn-danger btn-lg" role="button" aria-disabled="true">Déconnexion</a>
-                </div>
-            {% else %}
-                <div>
-                    <a href="{{path('app_register')}}" class="btn btn-danger btn-lg" role="button" aria-disabled="true">Inscription</a>
-                    
-                    <a href="{{path('app_login')}}" class="btn btn-danger btn-lg" role="button" aria-disabled="true">Connexion</a>
-                </div>
-            {% endif %}
-        </nav>
-    #}
-        
+        <br>      
         <hr>
         {% block body %}{% endblock %}
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
