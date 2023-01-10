@@ -25,6 +25,7 @@ class UserRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
         ->where('u.email like :email')
         ->setParameters(array('email'=>'%'.$email.'%'))
+        ->orderBy('u.registerDate', 'DESC')
         ->getQuery()
         ->getResult();
     }
