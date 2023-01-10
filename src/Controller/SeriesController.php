@@ -79,6 +79,8 @@ class SeriesController extends AbstractController
         }
         
 
+        
+
         $series = $entityManager
             ->getRepository(Series::class)
             //->findBy([],[], 10, $page*10);
@@ -106,6 +108,7 @@ class SeriesController extends AbstractController
         return new Response(stream_get_contents($series->getPoster()),200,array('Content-type'=>'image/jpeg'));
     }
     #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
+    public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     {
         $seasons = $entityManager

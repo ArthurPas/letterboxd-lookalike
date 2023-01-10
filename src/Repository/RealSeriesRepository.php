@@ -30,7 +30,27 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getSingleScalarResult();
         
     }
-
+    public function rechercheAvecGenre($initiale, $annee, $genre){
+        $query= $this->createQueryBuilder('s')
+        ->join('s.genre', 'g')
+        ->where('s.title like :title')
+        ->andWhere('s.yearStart like :year')
+        ->andWhere(':g MEMBER OF s.genre')
+        ->setParameters(array('title'=> '%'.$initiale.'%','year' => '%'.$annee.'%','g'=>$genre))
+        ->getQuery()
+        ->getResult(); 
+            return $query;
+    }
+    public function rechercheSansGenre($initiale, $annee){
+        $query= $this->createQueryBuilder('s')
+        ->join('s.genre', 'g')
+        ->where('s.title like :title')
+        ->andWhere('s.yearStart like :year')
+        ->setParameters(array('title'=> '%'.$initiale.'%','year' => '%'.$annee.'%'))
+        ->getQuery()
+        ->getResult(); 
+        return $query;
+    }
 /*
     public function save(Series $entity, bool $flush = false): void
     {
