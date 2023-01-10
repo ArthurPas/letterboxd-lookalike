@@ -33,7 +33,7 @@ class SeriesController extends AbstractController
         $series = $entityManager
             ->getRepository(Series::class)
             ->findBy([],[], 10, $page*10);
-        return $this->render('series/catalogue.html.twig', [
+        return $this->render('series/index.html.twig', [
             'series' => $series,
             'nb' => $nb
         ]);
