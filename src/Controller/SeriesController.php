@@ -6,13 +6,10 @@ use App\Entity\Episode;
 use App\Entity\Genre;
 use App\Entity\Season;
 use App\Entity\Series;
-use App\Form\SeriesType;
 use App\Repository\EpisodeRepository;
 use App\Repository\RealSeriesRepository;
-use App\Repository\SeriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,31 +18,24 @@ use Doctrine\Persistence\ManagerRegistry;
 class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['POST','GET'])]
-    public function index(ManagerRegistry $doctrine,RealSeriesRepository $repository, EntityManagerInterface $entityManager): Response
+    public function catalogue(ManagerRegistry $doctrine,RealSeriesRepository $repository, EntityManagerInterface $entityManager): Response
     {
         $page = 0;
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Series::class);
+        $nb=$repository->findNbSerie();
         if(isset($_GET['nb'])){
             $page = $_GET['nb'];
             $page = intval(trim($page,"%2F"));
+            $page = $page % $nb;
 
         }
         $series = $entityManager
             ->getRepository(Series::class)
-            //->findBy([],[], 10, $page*10);
-            ->findALl();
-        
-        $em = $doctrine->getManager();
-        $repository = $em->getRepository(Series::class);
-        $nb=$repository->findNbSerie();
-        $dixSeries = [];
-        for($i=0;$i<10;$i++){
-            
-            array_push($dixSeries,$series[rand(0,$nb-1)]);
-        }
-        return $this->render('series/index.html.twig', [
-            'series' => $dixSeries,
+            ->findBy([],[], 10, $page*10);
+        return $this->render('series/catalogue.html.twig', [
+            'series' => $series,
             'nb' => $nb
-
         ]);
     }
     #[Route('/poster/{id}', name: 'app_series_poster', methods: ['GET'])]
