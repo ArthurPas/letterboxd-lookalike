@@ -25,13 +25,16 @@ class SeriesController extends AbstractController
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Series::class);
         $nb=$repository->findNbSerie();
+        $genres = $entityManager
+        ->getRepository(Series::class)
+        ->getAllGenre();
         if(isset($_GET['nb'])){
             $page = $_GET['nb'];
             $page = intval(trim($page,"%2F"));
             $page = $page % $nb;
 
         }
-
+        /*
         if(isset($_GET['initiale']) || isset($_GET['annee'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
@@ -41,7 +44,6 @@ class SeriesController extends AbstractController
 
         
             $em = $doctrine->getManager();
-            $nb=$repository->findNbSerie();
             $repository = $em->getRepository(Series::class);
             $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -49,18 +51,25 @@ class SeriesController extends AbstractController
                 10 // Nombre de résultats par page
             );
             return $this->render('series/index.html.twig', [
+                'series' => $seriesCherchees,
+                'nb' => $nb,
+                'genre' => $genres
                 'series' => $seriesAAfficher,
-                'nb' => $nb
         ]);
             
         }
+        */
         if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
             $genre = $_GET['genre'];
+            
+            $idGenre = $entityManager
+            ->getRepository(Series::class)
+            ->genreVersId($genre);
             $seriesCherchees = $entityManager
             ->getRepository(Series::class)
-            ->rechercheAvecGenre($initiale,$annee,$genre);
+            ->rechercheAvecGenre($initiale,$annee,$idGenre);
 
         
             $em = $doctrine->getManager();
@@ -70,10 +79,16 @@ class SeriesController extends AbstractController
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
+            );            $seriesAAfficher = $paginator->paginate(
+                $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                10 // Nombre de résultats par page
             );
             return $this->render('series/index.html.twig', [
+                'series' => $seriesCherchees,
+                'nb' => $nb,
+                'genre' => $genres,
                 'series' => $seriesAAfficher,
-                'nb' => $nb
         ]);
             
         }
@@ -81,23 +96,20 @@ class SeriesController extends AbstractController
 
         $series = $entityManager
             ->getRepository(Series::class)
-            //->findBy([],[], 10, $page*10);
             ->findALl();
         
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Series::class);
         $nb=$repository->findNbSerie();
         $dixSeries = [];
-
-        
-
         for($i=0;$i<10;$i++){
             
             array_push($dixSeries,$series[rand(0,$nb-1)]);
         }
         return $this->render('series/index.html.twig', [
             'series' => $series,
-            'nb' => $nb
+            'nb' => $nb,
+            'genre' => $genres
         ]);
     }
     #[Route('/poster/{id}', name: 'app_series_poster', methods: ['GET'])]
