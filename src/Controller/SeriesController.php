@@ -176,6 +176,12 @@ class SeriesController extends AbstractController
     {
         $seasons = $em
             ->getRepository(Season::class)
+            ->createQueryBuilder('e')
+            ->join('e.season', 's')
+            ->join('s.series', 'sr')
+            ->where('sr.id = :sId')
+            ->andWhere('s.number = :sNb')
+            ->orderBy('e.number')
             ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
 
         $em = $doctrine->getManager();
@@ -213,6 +219,47 @@ class SeriesController extends AbstractController
             'series' => $series,
             'seasons' => $seasons,
             'episode' => $episode,
+            'currentSeason' => $season
+        ]);
+    }
+
+    #[Route('/aVoir/{ep}/{id}/{season}', name: 'aVoir_episode')]
+    public function aVoir(ManagerRegistry $doctrine, Episode $ep, Series $serie, EntityManagerInterface $em, Season $season )
+    {
+        $seasons = $em
+            ->getRepository(Season::class)
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Episode::class);
+        $episode = $repository->findEpisodes($serie->getId(), $season->getId());
+        $this->getUser()->removeEpisode($ep);
+        $em->flush();
+        return $this->render('series/show.html.twig', [
+            'series' => $serie,
+            'seasons' => $seasons,
+            'episode' => $episode,
+            'user' => $this->getUser(),
+            'currentSeason' => $season
+        ]);
+    }
+
+    #[Route('/vu/{ep}/{id}/{season}', name: 'vu_episode')]
+    public function vu(ManagerRegistry $doctrine,Episode $ep, Series $serie, EntityManagerInterface $em, Season $season )
+    {
+        $seasons = $em
+            ->getRepository(Season::class)
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
+
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Episode::class);
+        $episode = $repository->findEpisodes($serie->getId(), $season->getId());
+        $this->getUser()->addEpisode($ep);
+        $em->flush();
+        return $this->render('series/show.html.twig', [
+            'series' => $serie,
+            'seasons' => $seasons,
+            'episode' => $episode,
+            'user' => $this->getUser(),
             'currentSeason' => $season
         ]);
     }

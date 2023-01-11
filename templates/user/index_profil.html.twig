@@ -46,6 +46,7 @@
                     <th>Nom</th>
                     <th>Email</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +54,12 @@
                 <tr>
                     <td><b>{{ user.name }}</b></td>
                     <td>{{ user.email }}</td>
-                    <td><a href="" class="btn btn-primary">visiter profil</a></td>
+                    <td>
+                        <form method="POST">
+                            <input type="text" value="{{user.id}}" name="userID" hidden="true">
+                            <input type="submit" value="Visiter profil" href="app_user_ficheUtilisateur">
+                        </form>        
+                    </td>
                 </tr>
         
             {% else %}
