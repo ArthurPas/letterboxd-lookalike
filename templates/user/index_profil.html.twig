@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <style>
+        * {
+            color: white;
+        }
+
+        .user-title {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .contain{
+            margin-left: 5%;
+            margin-right: 5%;
+            padding: 15px;
+            padding-top: 5px;
+            padding-bottom: 15px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        #profil-clr{
+            color: #c82333;
+        }
+            
+        #profil-clr:hover{
+            font-weight: bold;
+        }
+    </style>
+    <div class="contain">
+        <h1 class="user-title">Liste des utilisateurs</h1>
+        <div class="rechercheParMail">
+            <form method='POST'>
+                <input type='text' name='mail'>
+                <input type='submit' value='Rechercher' href='app_user_index'>
+            </form>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><b>{{ user.name }}</b></td>
+                    <td>{{ user.email }}</td>
+                    <td><a href="" class="btn btn-primary">visiter profil</a></td>
+                </tr>
+        
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
