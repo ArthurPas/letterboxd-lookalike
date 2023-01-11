@@ -136,10 +136,17 @@ class SeriesController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
         );
+        $seriesSuiviesRecupere = $repository->seriesSuivies($this->getUser());
+        $seriesSuivies = $paginator->paginate(
+            $seriesSuiviesRecupere, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            10 // Nombre de résultats par page
+        );
         return $this->render('series/index.html.twig', [
             'series' => $seriesAAfficher,
             'nb' => $nb,
-            'genre' => $genres
+            'genre' => $genres,
+            'seriesSuivies' => $seriesSuivies
         ]);
     }
 
