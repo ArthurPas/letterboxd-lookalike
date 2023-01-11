@@ -47,7 +47,7 @@ class SeriesController extends AbstractController
             return $this->render('series/index.html.twig', [
                 'series' => $seriesCherchees,
                 'nb' => $nb,
-                'genre' => $genres
+                'genre' => $genres,
                 'series' => $seriesAAfficher,
         ]);
             
@@ -57,6 +57,47 @@ class SeriesController extends AbstractController
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
             $genre = $_GET['genre'];
+
+            if (empty($genre)) {
+                $seriesCherchees = $entityManager
+                ->getRepository(Series::class)
+                ->rechercheSansGenre($initiale,$annee);
+            
+                $em = $doctrine->getManager();
+                $repository = $em->getRepository(Series::class);
+                $seriesAAfficher = $paginator->paginate(
+                $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                10 // Nombre de résultats par page
+                );
+                return $this->render('series/index.html.twig', [
+                    'series' => $seriesCherchees,
+                    'nb' => $nb,
+                    'genre' => $genres,
+                    'series' => $seriesAAfficher,
+                ]);
+            }else{
+                $idGenre = $entityManager
+            ->getRepository(Series::class)
+            ->genreVersId($genre);
+            $seriesCherchees = $entityManager
+            ->getRepository(Series::class)
+            ->rechercheAvecGenre($initiale,$annee,$idGenre);
+            $em = $doctrine->getManager();
+            $nb=$repository->findNbSerie();
+            $repository = $em->getRepository(Series::class);
+            $seriesAAfficher = $paginator->paginate(
+                $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                10 // Nombre de résultats par page
+            );
+            return $this->render('series/index.html.twig', [
+                'series' => $seriesCherchees,
+                'nb' => $nb,
+                'genre' => $genres,
+                'series' => $seriesAAfficher,
+            ]); 
+            }
             $idGenre = $entityManager
             ->getRepository(Series::class)
             ->genreVersId($genre);
