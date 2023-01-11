@@ -31,12 +31,22 @@
         #utilisateurs-clr:hover{
             font-weight: bold;
         }
+
+        .rechercheParMail {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            margin-bottom: 40px;
+            justify-content: end;
+
+        }
+
     </style>
     <div class="contain">
         <h1 class="user-title">Liste des utilisateurs</h1>
         <div class="rechercheParMail">
             <form method='POST'>
-                <input type='text' name='mail'>
+                <input type='text' name='mail' placeholder="Email">
                 <input type='submit' value='Rechercher' href='app_user_index'>
             </form>
         </div>
