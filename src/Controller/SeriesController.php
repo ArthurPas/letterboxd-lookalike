@@ -102,7 +102,7 @@ class SeriesController extends AbstractController
         ]);
     }
 
-    #[Route('/suppr/{id}', name: 'suppr_serie')]
+    #[Route('/suppr/{id}/{season}', name: 'suppr_serie')]
     public function suivre(ManagerRegistry $doctrine, Series $serie, EntityManagerInterface $em, Season $season )
     {
         $seasons = $em
@@ -118,11 +118,12 @@ class SeriesController extends AbstractController
             'series' => $serie,
             'seasons' => $seasons,
             'episode' => $episode,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'currentSeason' => $season
         ]);
     }
 
-    #[Route('/suivre/{id}', name: 'suivre_serie')]
+    #[Route('/suivre/{id}/{season}', name: 'suivre_serie')]
     public function suppr(ManagerRegistry $doctrine, Series $serie, EntityManagerInterface $em, Season $season )
     {
         $seasons = $em
@@ -138,7 +139,8 @@ class SeriesController extends AbstractController
             'series' => $serie,
             'seasons' => $seasons,
             'episode' => $episode,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'currentSeason' => $season
         ]);
     }
 
@@ -162,7 +164,8 @@ class SeriesController extends AbstractController
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $seasons,
-            'episode' => $episode
+            'episode' => $episode,
+            'currentSeason' => $season
         ]);
     }
 }
