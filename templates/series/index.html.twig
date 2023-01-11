@@ -97,6 +97,7 @@
             <input type="text" name="annee"/>
             <label>genre</label>
             <select name="genre">
+                <option value="">--choisissez un genre--</option>
                 {% for genres in genre %}
                 <option value="{{ genres.name }}"> {{ genres.name }} </option>
                 {% endfor %}
