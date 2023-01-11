@@ -117,13 +117,13 @@
     </style>
     <div class="contain">
     <h1>Découvrir</h1>
-
     <div class="container">
         <div class="research-form">
             <form action="" method="GET">
                     <input type="text" name="initiale" placeholder="Titre"/>
                     <input type="text" name="annee" placeholder="Date de diffusion"/>
                     <select name="genre">
+                        <option value="">--choisissez un genre--</option>
                         {% for genres in genre %}
                         <option value="{{ genres.name }}"> {{ genres.name }} </option>
                         {% endfor %}
@@ -132,7 +132,6 @@
             </form>
         </div>
     </div>
-
         <div class="row ligne_theme">
             {% for series in series %}
                     <div class="col-2_4">

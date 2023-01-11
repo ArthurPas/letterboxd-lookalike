@@ -19,10 +19,14 @@ class UserController extends AbstractController
     {
         $em = $doctrine->getManager();
         $repository = $em->getRepository(User::class);
-        $users = $repository->findUser($_POST['mail']);
-
+        if(isset($_POST['mail'])){
+            $users = $repository->findUser($_POST['mail']);
+        }
+        else{
+            $users = $repository->findBy([],['registerDate'=>'DESC']);
+        }
         return $this->render('user/index.html.twig', [
             'users' => $users,
         ]);
-    }   
+    }
 }
