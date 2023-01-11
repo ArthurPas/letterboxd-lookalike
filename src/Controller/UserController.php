@@ -46,4 +46,25 @@ class UserController extends AbstractController
             'users' => $users,
         ]);
     }   
+
+    #[Route('/{userID}', name: 'app_user_ficheUtilisateur', methods: ['POST'])]
+    public function ficheUtilisateur(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $user): Response
+    {
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(User::class);
+
+        $userID = $_POST['userID'];
+
+        $name = $repository->findUserName($userID);
+        $email = $repository->findUserName($userID);
+        $registerDate = $repository->findUserName($userID);
+        $country = $repository->findUserName($userID);
+
+        return $this->render('user/fiche_utilisateur.html.twig', [
+            'name' => $name,
+            'email' => $email,
+            'registerDate' => $registerDate,
+            'country' => $country,
+        ]); 
+    }
 }
