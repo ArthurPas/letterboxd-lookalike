@@ -209,4 +209,43 @@ class SeriesController extends AbstractController
             'currentSeason' => $season
         ]);
     }
+
+    #[Route('/aVoir/{id}', name: 'aVoir_episode')]
+    public function aVoir(ManagerRegistry $doctrine, Episode $episodeEnCours, Series $serie, EntityManagerInterface $em, Season $season )
+    {
+        $seasons = $em
+            ->getRepository(Season::class)
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Episode::class);
+        $episode = $repository->findEpisodes($serie->getId(), $season->getId());
+        $this->getUser()->removeEpisode($episodeEnCours);
+        $em->flush();
+        return $this->render('series/show.html.twig', [
+            'series' => $serie,
+            'seasons' => $seasons,
+            'episode' => $episode,
+            'user' => $this->getUser()
+        ]);
+    }
+
+    #[Route('/vu/{id}', name: 'vu_episode')]
+    public function vu(ManagerRegistry $doctrine,Episode $episodeEnCours, Series $serie, EntityManagerInterface $em, Season $season )
+    {
+        $seasons = $em
+            ->getRepository(Season::class)
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
+
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Episode::class);
+        $episode = $repository->findEpisodes($serie->getId(), $season->getId());
+        $this->getUser()->addEpisode($episodeEnCours);
+        $em->flush();
+        return $this->render('series/show.html.twig', [
+            'series' => $serie,
+            'seasons' => $seasons,
+            'episode' => $episode,
+            'user' => $this->getUser()
+        ]);
+    }
 }
