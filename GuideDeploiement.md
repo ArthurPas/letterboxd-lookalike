@@ -9,6 +9,8 @@ Pour commencer, cloner ce dépot dans un dossier
 Installer Symfony. Pour ce faire télécharger l'outil en ligne de commande symfony (choisissez les binaires AMD64), placez les dans un dossier (par exemple symfony) et ajoutez ce dossier dans votre $PATH, en ajoutant par exemple:
 > export PATH=$PATH:$HOME/symfony
 Dans votre fichier .bashrc
+Puis dans un terminal ecrire 
+> symfony composer update
 
 ## Lancer le serveur 
 Pour ce faire aller dans le dossier où vous avez cloné le dépot puis lancer la commande

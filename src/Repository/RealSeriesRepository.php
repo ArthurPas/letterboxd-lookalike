@@ -71,6 +71,15 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
+    public function seriesSuivies($user)
+    {
+        $query= $this->createQueryBuilder('s')
+        ->where(':u  MEMBER OF s.user')
+        ->setParameters(array('u'=>$user))
+        ->getQuery()
+        ->getResult();
+        return $query;
+    }
 /*
     public function save(Series $entity, bool $flush = false): void
     {

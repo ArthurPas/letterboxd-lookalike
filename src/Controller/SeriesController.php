@@ -53,11 +53,16 @@ class SeriesController extends AbstractController
             
         }
         */
+        $seriesSuiviesRecupere = $repository->seriesSuivies($this->getUser());
+            $seriesSuivies = $paginator->paginate(
+            $seriesSuiviesRecupere, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            10 // Nombre de résultats par page
+            );
         if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
-            $genre = $_GET['genre'];
-
+            $genre = $_GET['genre'];   
             if (empty($genre)) {
                 $seriesCherchees = $entityManager
                 ->getRepository(Series::class)
@@ -75,6 +80,7 @@ class SeriesController extends AbstractController
                     'nb' => $nb,
                     'genre' => $genres,
                     'series' => $seriesAAfficher,
+                    'seriesSuivies' => $seriesSuivies,
                 ]);
             }else{
                 $idGenre = $entityManager
@@ -96,6 +102,7 @@ class SeriesController extends AbstractController
                 'nb' => $nb,
                 'genre' => $genres,
                 'series' => $seriesAAfficher,
+                'seriesSuivies' => $seriesSuivies,
             ]); 
             }
             $idGenre = $entityManager
@@ -117,6 +124,7 @@ class SeriesController extends AbstractController
                 'nb' => $nb,
                 'genre' => $genres,
                 'series' => $seriesAAfficher,
+                'seriesSuivies' => $seriesSuivies,
             ]);     
         }
         $series = $entityManager
@@ -136,10 +144,12 @@ class SeriesController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
         );
+        
         return $this->render('series/index.html.twig', [
             'series' => $seriesAAfficher,
             'nb' => $nb,
-            'genre' => $genres
+            'genre' => $genres,
+            'seriesSuivies' => $seriesSuivies
         ]);
     }
 
@@ -169,6 +179,12 @@ class SeriesController extends AbstractController
     {
         $seasons = $em
             ->getRepository(Season::class)
+            ->createQueryBuilder('e')
+            ->join('e.season', 's')
+            ->join('s.series', 'sr')
+            ->where('sr.id = :sId')
+            ->andWhere('s.number = :sNb')
+            ->orderBy('e.number')
             ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
 
         $em = $doctrine->getManager();
@@ -206,10 +222,8 @@ class SeriesController extends AbstractController
         ]);
     }
 
-
-
-    #[Route('/aVoir/{id}', name: 'aVoir_episode')]
-    public function aVoir(ManagerRegistry $doctrine, Episode $episodeEnCours, Series $serie, EntityManagerInterface $em, Season $season )
+    #[Route('/aVoir/{ep}/{id}/{season}', name: 'aVoir_episode')]
+    public function aVoir(ManagerRegistry $doctrine, Episode $ep, Series $serie, EntityManagerInterface $em, Season $season )
     {
         $seasons = $em
             ->getRepository(Season::class)
@@ -217,18 +231,19 @@ class SeriesController extends AbstractController
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
-        $this->getUser()->removeEpisode($episodeEnCours);
+        $this->getUser()->removeEpisode($ep);
         $em->flush();
         return $this->render('series/show.html.twig', [
             'series' => $serie,
             'seasons' => $seasons,
             'episode' => $episode,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'currentSeason' => $season
         ]);
     }
 
-    #[Route('/vu/{id}', name: 'vu_episode')]
-    public function vu(ManagerRegistry $doctrine,Episode $episodeEnCours, Series $serie, EntityManagerInterface $em, Season $season )
+    #[Route('/vu/{ep}/{id}/{season}', name: 'vu_episode')]
+    public function vu(ManagerRegistry $doctrine,Episode $ep, Series $serie, EntityManagerInterface $em, Season $season )
     {
         $seasons = $em
             ->getRepository(Season::class)
@@ -237,13 +252,14 @@ class SeriesController extends AbstractController
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
-        $this->getUser()->addEpisode($episodeEnCours);
+        $this->getUser()->addEpisode($ep);
         $em->flush();
         return $this->render('series/show.html.twig', [
             'series' => $serie,
             'seasons' => $seasons,
             'episode' => $episode,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'currentSeason' => $season
         ]);
     }
 }
