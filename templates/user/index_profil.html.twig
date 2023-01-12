@@ -55,10 +55,7 @@
                     <td><b>{{ user.name }}</b></td>
                     <td>{{ user.email }}</td>
                     <td>
-                        <form method="POST">
-                            <input type="text" value="{{user.id}}" name="userID" hidden="true">
-                            <input type="submit" value="Visiter profil" href="app_user_ficheUtilisateur">
-                        </form>        
+                            <a href="{{ path('app_user_ficheUtilisateur', {'userID': user.id}) }}">voir le profil</a>
                     </td>
                 </tr>
         

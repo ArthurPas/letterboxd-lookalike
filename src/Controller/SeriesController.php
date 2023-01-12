@@ -185,11 +185,7 @@ class SeriesController extends AbstractController
         ]);
     }
 
-    #[Route('/poster/{id}', name: 'app_series_poster', methods: ['GET'])]
-    public function getPoster(Series $series): Response
-    {
-        return new Response(stream_get_contents($series->getPoster()),200,array('Content-type'=>'image/jpeg'));
-    }
+ 
     
     #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
     public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
@@ -209,6 +205,8 @@ class SeriesController extends AbstractController
             'currentSeason' => $season
         ]);
     }
+
+
 
     #[Route('/aVoir/{id}', name: 'aVoir_episode')]
     public function aVoir(ManagerRegistry $doctrine, Episode $episodeEnCours, Series $serie, EntityManagerInterface $em, Season $season )

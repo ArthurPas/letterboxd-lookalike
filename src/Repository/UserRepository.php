@@ -31,6 +31,7 @@ class UserRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+    /*
     public function findUserName($id)
     {
         return $this->createQueryBuilder('u')
@@ -70,4 +71,5 @@ class UserRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+    */
 }

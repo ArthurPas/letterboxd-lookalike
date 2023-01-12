@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Expr\Cast\Int_;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -47,24 +48,17 @@ class UserController extends AbstractController
         ]);
     }   
 
-    #[Route('/{userID}', name: 'app_user_ficheUtilisateur', methods: ['POST'])]
-    public function ficheUtilisateur(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $user): Response
+    #[Route('/{userID}', name: 'app_user_ficheUtilisateur', methods: ['GET', 'POST'])]
+    public function ficheUtilisateur(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $userID): Response
     {
         $em = $doctrine->getManager();
         $repository = $em->getRepository(User::class);
 
-        $userID = $_POST['userID'];
-
-        $name = $repository->findUserName($userID);
-        $email = $repository->findUserName($userID);
-        $registerDate = $repository->findUserName($userID);
-        $country = $repository->findUserName($userID);
+        $user = $repository->findOneBy(['id' => $userID]);
 
         return $this->render('user/fiche_utilisateur.html.twig', [
-            'name' => $name,
-            'email' => $email,
-            'registerDate' => $registerDate,
-            'country' => $country,
+            'user' => $user,
+            
         ]); 
     }
 }
