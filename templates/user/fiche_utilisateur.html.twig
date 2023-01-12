@@ -1,31 +1,59 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<table>
-    <tr>
-        <td>nom</td>
-        <td>{{ user.name }}</td>
-    </tr>
-    <tr>
-        <td>email</td>
-        <td>{{ user.email }}</td>
-    </tr>
-    <tr>
-        <td>country</td>
-        <td>{{ user.country }}</td>
-    </tr>
-    <tr>
-        <td>date d'inscription</td>
-        <td>{{ user.registerDate|date('Y-m-d H:i:s') }}</td>
-    </tr>
-</table>
 
-<h2>Series suivies</h2>
+    <style>
+        *{
+            color: white;
+        }
 
-<ul>
+        .contain{
+            margin-left: 5%;
+            margin-right: 5%;
+            padding: 15px;
+            padding-top: 5px;
+            padding-bottom: 15px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .profil-info{
+            margin-bottom: 30px;
+        }
 
-{% for series in user.series %}
-    <li>{{series.title}}</li>
-{% endfor %}
-</ul>
+        .profil{
+            margin: 30px;
+        }
+        
+        img{
+            width: 180px;
+            height: 250px;
+            margin: 10px;
+        }
 
+        #mon-profil-clr{
+            color: #c82333;
+        }
+            
+        #mon-profil-clr:hover{
+            font-weight: bold;
+        }
+    </style>
+    <div class="contain">
+        <div class="profil">
+            <div class="profil-info">
+            <h1>Profil : {{ user.name }}</h1>
+            <h6>{{ user.email }} | {{ user.country }} </h6>
+            <h6>Inscrit depuis : {{ user.registerDate|date('d/m/Y') }}</h6>
+            </div>
+
+            <h2>Séries suivies</h2>
+
+
+            {% for series in user.series %}
+               <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}">{{series.showPoster}}</a>
+            {% endfor %}
+
+            </div>
+        </div>
+    </contain>
 {% endblock %}

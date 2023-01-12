@@ -157,6 +157,9 @@
                                 <a class="nav-link scroll-link" href="{{path('app_user_profil_index')}}" id="profil-clr">Rechercher un utilisateur</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link scroll-link" href="/user/{{app.user.id}}" id="mon-profil-clr">Accéder à mon profil</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link scroll-link" href="{{path('app_logout')}}">Déconnexion</a>
                             </li>
                             {% if app.user.admin =='Yes' %}
