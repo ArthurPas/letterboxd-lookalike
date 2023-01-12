@@ -179,13 +179,7 @@ class SeriesController extends AbstractController
     {
         $seasons = $em
             ->getRepository(Season::class)
-            ->createQueryBuilder('e')
-            ->join('e.season', 's')
-            ->join('s.series', 'sr')
-            ->where('sr.id = :sId')
-            ->andWhere('s.number = :sNb')
-            ->orderBy('e.number')
-            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC')); 
 
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);
