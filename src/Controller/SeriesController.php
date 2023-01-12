@@ -179,13 +179,7 @@ class SeriesController extends AbstractController
     {
         $seasons = $em
             ->getRepository(Season::class)
-            ->createQueryBuilder('e')
-            ->join('e.season', 's')
-            ->join('s.series', 'sr')
-            ->where('sr.id = :sId')
-            ->andWhere('s.number = :sNb')
-            ->orderBy('e.number')
-            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC')); 
 
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);
@@ -201,11 +195,7 @@ class SeriesController extends AbstractController
         ]);
     }
 
-    #[Route('/poster/{id}', name: 'app_series_poster', methods: ['GET'])]
-    public function getPoster(Series $series): Response
-    {
-        return new Response(stream_get_contents($series->getPoster()),200,array('Content-type'=>'image/jpeg'));
-    }
+ 
     
     #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
     public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response

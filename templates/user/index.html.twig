@@ -41,6 +41,23 @@
 
         }
 
+        .pagination a, .current{
+            color: white;
+            padding: 10px;
+            margin: 3px;
+            border: 1px solid #6c757d;
+            border-radius: 4px;
+            background: #6c757d;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .pagination a:hover{
+            border: 1px solid #545b62;
+            background: #545b62;
+            transition: 0.2s;
+        }
+
     </style>
     <div class="contain">
         <h1 class="user-title">Liste des utilisateurs</h1>
@@ -73,7 +90,6 @@
                     <td>{{ user.admin ? 'Yes' : 'No' }}</td>
                     <td>{{ user.country }}</td>
                     <td><a href="{{ path('app_series_index', {'_switch_user': user.email}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Incarner</a></td>
-                    <td><button type"button" class="btn btn-primary">Éditer</button></td>
                 </tr>
         
             {% else %}
@@ -83,5 +99,6 @@
             {% endfor %}
             </tbody>
         </table>
+        {{ knp_pagination_render(users) }} 
     </div>
 {% endblock %}

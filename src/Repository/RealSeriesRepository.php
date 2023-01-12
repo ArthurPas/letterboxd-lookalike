@@ -80,6 +80,23 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
+    public function getAllId(){
+        $query = $this->createQueryBuilder('s')
+        ->select('s.id')
+        ->getQuery()
+        ->getResult();
+        return $query;
+    }
+    public function findDixSeries($un,$deux,$trois,$quatre,$cinq,$six,$sept,$huit,$neuf,$dix){
+        $query=$this->createQueryBuilder('s')
+        ->where('s.id = :un or s.id = :deux or s.id = :trois or s.id = :quatre or s.id = :cinq or
+        s.id = :s or s.id = :sept or s.id = :huit or s.id = :neuf or s.id = :dix')
+        ->setParameters(array('un'=>$un,'deux'=>$deux,'trois'=>$trois, 'quatre'=>$quatre, 'cinq'=>$cinq,
+        's'=>$six,'sept'=>$sept,'huit'=>$huit,'neuf'=>$neuf,'dix'=>$dix))
+        ->getQuery()
+        ->getResult();
+        return $query;
+    }
 /*
     public function save(Series $entity, bool $flush = false): void
     {

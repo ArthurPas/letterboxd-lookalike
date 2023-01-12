@@ -50,7 +50,7 @@
             • {{ series.awards }}
             </p>
             <div class="media">
-                <img src={{path('app_series_poster',{'id':series.id})}}>
+                <img src={{path('app_accueil_poster',{'id':series.id})}}>
                 
                 {% set youtubeLink = series.YoutubeTrailer|split('v=') %}
                         <iframe width="100%" height="400" src= "https://www.youtube.com/embed/{{youtubeLink[1]}}" title="YouTube" frameborder="0" 

@@ -6,16 +6,18 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface; 
+use PhpParser\Node\Expr\Cast\Int_;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
     #[Route('/list', name: 'app_user_index', methods: ['GET', 'POST'])]
-    public function index(ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
+    public function index(ManagerRegistry $doctrine, EntityManagerInterface $entityManager,PaginatorInterface $paginator, Request $request): Response
     {
         $em = $doctrine->getManager();
         $repository = $em->getRepository(User::class);
@@ -24,10 +26,14 @@ class UserController extends AbstractController
         } else {
             $users = $repository->findBy([], ['registerDate'=>'DESC']);
         }
-        
+        $usersPagines = $paginator->paginate(
+            $users, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            8 // Nombre de résultats par page
+            );
 
         return $this->render('user/index.html.twig', [
-            'users' => $users,
+            'users' => $usersPagines,
         ]);
     }  
 
@@ -46,4 +52,18 @@ class UserController extends AbstractController
             'users' => $users,
         ]);
     }   
+
+    #[Route('/{userID}', name: 'app_user_ficheUtilisateur', methods: ['GET', 'POST'])]
+    public function ficheUtilisateur(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $userID): Response
+    {
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(User::class);
+
+        $user = $repository->findOneBy(['id' => $userID]);
+
+        return $this->render('user/fiche_utilisateur.html.twig', [
+            'user' => $user,
+            
+        ]); 
+    }
 }
