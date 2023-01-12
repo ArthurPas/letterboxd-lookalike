@@ -53,11 +53,16 @@ class SeriesController extends AbstractController
             
         }
         */
+        $seriesSuiviesRecupere = $repository->seriesSuivies($this->getUser());
+            $seriesSuivies = $paginator->paginate(
+            $seriesSuiviesRecupere, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            10 // Nombre de résultats par page
+            );
         if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
-            $genre = $_GET['genre'];
-
+            $genre = $_GET['genre'];   
             if (empty($genre)) {
                 $seriesCherchees = $entityManager
                 ->getRepository(Series::class)
@@ -75,6 +80,7 @@ class SeriesController extends AbstractController
                     'nb' => $nb,
                     'genre' => $genres,
                     'series' => $seriesAAfficher,
+                    'seriesSuivies' => $seriesSuivies,
                 ]);
             }else{
                 $idGenre = $entityManager
@@ -96,6 +102,7 @@ class SeriesController extends AbstractController
                 'nb' => $nb,
                 'genre' => $genres,
                 'series' => $seriesAAfficher,
+                'seriesSuivies' => $seriesSuivies,
             ]); 
             }
             $idGenre = $entityManager
@@ -117,6 +124,7 @@ class SeriesController extends AbstractController
                 'nb' => $nb,
                 'genre' => $genres,
                 'series' => $seriesAAfficher,
+                'seriesSuivies' => $seriesSuivies,
             ]);     
         }
         $series = $entityManager
@@ -136,12 +144,7 @@ class SeriesController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
         );
-        $seriesSuiviesRecupere = $repository->seriesSuivies($this->getUser());
-        $seriesSuivies = $paginator->paginate(
-            $seriesSuiviesRecupere, // Requête contenant les données à paginer (ici nos articles)
-            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            10 // Nombre de résultats par page
-        );
+        
         return $this->render('series/index.html.twig', [
             'series' => $seriesAAfficher,
             'nb' => $nb,
