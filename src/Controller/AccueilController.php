@@ -14,19 +14,14 @@ class AccueilController extends AbstractController
     #[Route('/', name: 'accueil_index', methods: ['POST','GET'])]
     public function index(ManagerRegistry $doctrine,RealSeriesRepository $repository, EntityManagerInterface $entityManager): Response
     {
-        $series = $entityManager
-            ->getRepository(Series::class)
-            //->findBy([],[], 10, $page*10);
-            ->findALl();
-        
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Series::class);
-        $nb=$repository->findNbSerie();
-        $dixSeries = [];
+        $id=$repository->getAllId();
+        $dixId = [];
         for($i=0;$i<10;$i++){
-            
-            array_push($dixSeries,$series[rand(0,$nb-1)]);
+            array_push($dixId,$id[rand(0,count($id)-1)]);
         }
+        $dixSeries=$repository->findDixSeries($dixId[0],$dixId[1],$dixId[2],$dixId[3],$dixId[4],$dixId[5],$dixId[6],$dixId[7],$dixId[8],$dixId[9]);
         return $this->render('accueil/index.html.twig', [
             'series' => $dixSeries,
         ]);
