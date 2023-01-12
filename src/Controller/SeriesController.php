@@ -152,7 +152,6 @@ class SeriesController extends AbstractController
         $seasons = $em
             ->getRepository(Season::class)
             ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
-
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addSeries($serie);
