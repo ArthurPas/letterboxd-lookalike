@@ -9,39 +9,73 @@
             .contains {
                 justify-content : center;
             }
-
+            
             
             h1 {
-                font-size: 40px;
+                font-size: 85px;
                 text-align: center;
             }
 
-            .col-2_4 {
-                width: 120px;
+            .form-control{
+                font-size: 45px;
+                width: 500px;
             }
 
-            .col-2_4 a {
-                width: 140px !important;
-                font-size: 15px;
+            .research-form {
+                justify-content:center !important;
             }
 
-            img {
-                width: 140px !important;
-                height: 150px !important;
+            .pagination a, .current{
+                color: white;
+                font-size: 30px;
+                padding: 20px !important;
+                margin: 6px !important;
+                border: 1px solid #6c757d;
+                border-radius: 10px !important;
+                background: #6c757d;
+                transition: 0.2s;
+                text-decoration: none;
+            }
+
+            .pagination a:hover{
+                border: 1px solid #545b62;
+                background: #545b62;
+                transition: 0.2s;
+            }
+
+            .pagination{
+                justify-content: center;
+            }
+
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .col-2_4{
+                display: flex;
+                flex-direction: column;
+                margin: 0 100px 100px 100px !important;
+            }
+
+            .col-2_4 a{
+                font-size: 30px !important;
+                width: 350px !important;
+            }
+
+            img{
+                width: 350px !important;
+                height: 520px !important;
             }
         }
 
-        .col-2_4,
-        .col-sm-2_4,
-        .col-md-2_4,
-        .col-lg-2_4,
-        .col-xl-2_4 {
+        .col-2_4 {
             width: 100%;
             min-height: 1px;
             display: flex;
             flex-direction: column;
-        }
-        .col-2_4 {
             -webkit-box-flex: 0;
             -ms-flex: 0 0 20%;
             flex: 0 0 20%;
@@ -54,6 +88,7 @@
             text-align: center;
             width: 300px;
         }
+
         img{
             width: 300px;
             height: 400px;
@@ -85,6 +120,7 @@
         #series-clr:hover{
             font-weight: bold;
         }
+
         .pagination a, .current{
             color: white;
             padding: 10px;
@@ -106,14 +142,6 @@
             color: white;
         }
 
-        .container {
-            width: 100%;    
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-
-        }
 
         .research-form {
             display: flex;
@@ -121,8 +149,6 @@
             align-items: center;
             margin-bottom: 40px;
             justify-content: start;
-            
-
         }
 
         form {
@@ -137,7 +163,7 @@
     </style>
     <div class="contain">
     <h1>Découvrir</h1>
-    <div class="container">
+
         <div class="research-form">
             <form action="" method="GET">
                     <input class="form-control" type="text" name="initiale" placeholder="Titre"/>
@@ -151,7 +177,7 @@
                     <input class="form-control btn-secondary btn-lg" type="submit" value="Rechercher"/>
             </form>
         </div>
-    </div>
+
         <div class="row ligne_theme">
             {% for series in series %}
                     <div class="col-2_4">

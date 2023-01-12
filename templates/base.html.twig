@@ -70,17 +70,14 @@
                 background: #ccc;
             }
             
-            /* rotate first span */
             .navbar-dark .navbar-toggler[aria-expanded="true"] span:first-of-type {
                 transform: rotate(45deg) translate(6px, 6px);
             }
             
-            /* hide second span */
             .navbar-dark .navbar-toggler[aria-expanded="true"] span:nth-of-type(2) {
                 opacity: 0;
             }
             
-            /* rotate third span */
             .navbar-dark .navbar-toggler[aria-expanded="true"] span:last-of-type {
                 transform: rotate(-45deg) translate(5px, -5px);
             }
@@ -107,17 +104,14 @@
                 transition: all .6s cubic-bezier(0.250, 0.100, 0.250, 1.000);
             }
 
-            /* rotate first span */
             .navbar-dark .navbar-toggler[aria-expanded="true"] span:first-of-type {
                 transform: rotate(45deg) translate(6px, 6px);
             }
             
-            /* hide second span */
             .navbar-dark .navbar-toggler[aria-expanded="true"] span:nth-of-type(2) {
                 opacity: 0;
             }
             
-            /* rotate third span */
             .navbar-dark .navbar-toggler[aria-expanded="true"] span:last-of-type {
                 transform: rotate(-45deg) translate(5px, -5px);
             }
@@ -125,6 +119,11 @@
             .navbar-dark .navbar-toggler[aria-expanded="false"] span {
                 transform: none;
                 opacity: 1;
+            }
+            @media (-webkit-min-device-pixel-ratio: 2) {
+                ul li{
+                    font-size: 35px;
+                }
             }
         </style>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
@@ -147,37 +146,37 @@
  
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link scroll-link" href="{{path('accueil_index')}}" id="accueil-clr">Accueil</a>
-                    </li>
-                    {% if app.user %}
                         <li class="nav-item">
-                            <a class="nav-link scroll-link" href="{{path('app_series_index')}}" id="series-clr">Accéder aux séries</a>
+                            <a class="nav-link scroll-link" href="{{path('accueil_index')}}" id="accueil-clr">Accueil</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link scroll-link" href="{{path('app_user_profil_index')}}" id="profil-clr">Rechercher un utilisateur</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link scroll-link" href="{{path('app_logout')}}">Déconnexion</a>
-                        </li>
-                        {% if app.user.admin =='Yes' %}
+                        {% if app.user %}
                             <li class="nav-item">
-                                <a class="nav-link scroll-link" href="{{path('app_user_index')}}" id="utilisateurs-clr">Liste utilisateurs</a>
+                                <a class="nav-link scroll-link" href="{{path('app_series_index')}}" id="series-clr">Accéder aux séries</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link scroll-link" href="{{path('app_user_profil_index')}}" id="profil-clr">Rechercher un utilisateur</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link scroll-link" href="{{path('app_logout')}}">Déconnexion</a>
+                            </li>
+                            {% if app.user.admin =='Yes' %}
+                                <li class="nav-item">
+                                    <a class="nav-link scroll-link" href="{{path('app_user_index')}}" id="utilisateurs-clr">Liste utilisateurs</a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link scroll-link" href="{{path('app_register')}}" id="inscription-clr">Inscription</a>                   
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link scroll-link" href="{{path('app_login')}}" id="connexion-clr">Connexion</a>
                             </li>
                         {% endif %}
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link scroll-link" href="{{path('app_register')}}" id="inscription-clr">Inscription</a>                   
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link scroll-link" href="{{path('app_login')}}" id="connexion-clr">Connexion</a>
-                        </li>
-                    {% endif %}
-                    {% if is_granted('IS_IMPERSONATOR') %}
-                        <li class="nav-item">
-                            <a href="{{ impersonation_exit_path(path('app_user_index') ) }}">Arrêter d'incarner</a>
-                        </li>
-                    {% endif %}
+                        {% if is_granted('IS_IMPERSONATOR') %}
+                            <li class="nav-item">
+                                <a href="{{ impersonation_exit_path(path('app_user_index') ) }}">Arrêter d'incarner</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
