@@ -148,10 +148,10 @@
         {% endif %}
         
         
-         {% if app.user %}
-            <a href="{{ path('app_series_index') }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
+        {% if app.user %}
+            <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
         {% else %}
-            <a href="{{ path('accueil_index') }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
+            <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
         {% endif %}
         
     </div>
