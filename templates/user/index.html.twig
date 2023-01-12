@@ -90,7 +90,6 @@
                     <td>{{ user.admin ? 'Yes' : 'No' }}</td>
                     <td>{{ user.country }}</td>
                     <td><a href="{{ path('app_series_index', {'_switch_user': user.email}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Incarner</a></td>
-                    <td><button type"button" class="btn btn-primary">Éditer</button></td>
                 </tr>
         
             {% else %}

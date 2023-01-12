@@ -171,7 +171,7 @@
         <div class="row ligne_theme">
             {% for series in seriesSuivies %}
                     <div class="col-2_4">
-                        <img src={{path('app_series_poster',{'id':series.id})}}>
+                        <img src={{path('app_accueil_poster',{'id':series.id})}}>
                         <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">{{ series.title }}</a>
                     </div>
             {% else %}
