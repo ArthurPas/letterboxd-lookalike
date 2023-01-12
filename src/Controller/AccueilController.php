@@ -26,5 +26,9 @@ class AccueilController extends AbstractController
             'series' => $dixSeries,
         ]);
     }
-    
+    #[Route('/poster/{id}', name: 'app_accueil_poster', methods: ['GET'])]
+    public function getPoster(Series $series): Response
+    {
+        return new Response(stream_get_contents($series->getPoster()),200,array('Content-type'=>'image/jpeg'));
+    }
 }
