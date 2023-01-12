@@ -24,35 +24,9 @@ class SeriesController extends AbstractController
     {
         $em = $doctrine->getManager();
         $repository = $em->getRepository(Series::class);
-        $nb=$repository->findNbSerie();
         $genres = $entityManager
         ->getRepository(Series::class)
         ->getAllGenre();
-        /*
-        if(isset($_GET['initiale']) || isset($_GET['annee'])){
-            $initiale = $_GET['initiale'];
-            $annee = $_GET['annee'];
-            $seriesCherchees = $entityManager
-            ->getRepository(Series::class)
-            ->rechercheSansGenre($initiale,$annee);
-
-        
-            $em = $doctrine->getManager();
-            $repository = $em->getRepository(Series::class);
-            $seriesAAfficher = $paginator->paginate(
-                $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
-                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-                10 // Nombre de résultats par page
-            );
-            return $this->render('series/index.html.twig', [
-                'series' => $seriesCherchees,
-                'nb' => $nb,
-                'genre' => $genres,
-                'series' => $seriesAAfficher,
-        ]);
-            
-        }
-        */
         $seriesSuiviesRecupere = $repository->seriesSuivies($this->getUser());
             $seriesSuivies = $paginator->paginate(
             $seriesSuiviesRecupere, // Requête contenant les données à paginer (ici nos articles)
@@ -68,7 +42,7 @@ class SeriesController extends AbstractController
                 ->getRepository(Series::class)
                 ->rechercheSansGenre($initiale,$annee);
             
-                $em = $doctrine->getManager();
+                //$em = $doctrine->getManager();
                 $repository = $em->getRepository(Series::class);
                 $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -77,7 +51,6 @@ class SeriesController extends AbstractController
                 );
                 return $this->render('series/index.html.twig', [
                     'series' => $seriesCherchees,
-                    'nb' => $nb,
                     'genre' => $genres,
                     'series' => $seriesAAfficher,
                     'seriesSuivies' => $seriesSuivies,
@@ -89,7 +62,7 @@ class SeriesController extends AbstractController
             $seriesCherchees = $entityManager
             ->getRepository(Series::class)
             ->rechercheAvecGenre($initiale,$annee,$idGenre);
-            $em = $doctrine->getManager();
+            //$em = $doctrine->getManager();
             $nb=$repository->findNbSerie();
             $repository = $em->getRepository(Series::class);
             $seriesAAfficher = $paginator->paginate(
@@ -99,7 +72,6 @@ class SeriesController extends AbstractController
             );
             return $this->render('series/index.html.twig', [
                 'series' => $seriesCherchees,
-                'nb' => $nb,
                 'genre' => $genres,
                 'series' => $seriesAAfficher,
                 'seriesSuivies' => $seriesSuivies,
@@ -111,7 +83,7 @@ class SeriesController extends AbstractController
             $seriesCherchees = $entityManager
             ->getRepository(Series::class)
             ->rechercheAvecGenre($initiale,$annee,$idGenre);
-            $em = $doctrine->getManager();
+            //$em = $doctrine->getManager();
             $nb=$repository->findNbSerie();
             $repository = $em->getRepository(Series::class);
             $seriesAAfficher = $paginator->paginate(
@@ -121,17 +93,17 @@ class SeriesController extends AbstractController
             );
             return $this->render('series/index.html.twig', [
                 'series' => $seriesCherchees,
-                'nb' => $nb,
                 'genre' => $genres,
                 'series' => $seriesAAfficher,
                 'seriesSuivies' => $seriesSuivies,
+                // last username entered by the usersSuivies,
             ]);     
         }
         $series = $entityManager
             ->getRepository(Series::class)
             ->findALl();
         
-        $em = $doctrine->getManager();
+        //$em = $doctrine->getManager();
         $repository = $em->getRepository(Series::class);
         $nb=$repository->findNbSerie();
         $dixSeries = [];
@@ -147,7 +119,6 @@ class SeriesController extends AbstractController
         
         return $this->render('series/index.html.twig', [
             'series' => $seriesAAfficher,
-            'nb' => $nb,
             'genre' => $genres,
             'seriesSuivies' => $seriesSuivies
         ]);
@@ -156,11 +127,11 @@ class SeriesController extends AbstractController
     #[Route('/suppr/{id}/{season}', name: 'suppr_serie')]
     public function suivre(ManagerRegistry $doctrine, Series $serie, EntityManagerInterface $em, Season $season )
     {
+        $em = $doctrine->getManager();
         $seasons = $em
             ->getRepository(Season::class)
             ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
 
-        $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeSeries($serie);
@@ -177,11 +148,10 @@ class SeriesController extends AbstractController
     #[Route('/suivre/{id}/{season}', name: 'suivre_serie')]
     public function suppr(ManagerRegistry $doctrine, Series $serie, EntityManagerInterface $em, Season $season )
     {
+        $em = $doctrine->getManager();
         $seasons = $em
             ->getRepository(Season::class)
-            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC')); 
-
-        $em = $doctrine->getManager();
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addSeries($serie);
@@ -200,11 +170,11 @@ class SeriesController extends AbstractController
     #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
     public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     {
+        $em = $doctrine->getManager();
         $seasons = $entityManager
             ->getRepository(Season::class)
             ->findBy(array('series'=>$series->getId()), array('number'=>'ASC'));
 
-        $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
 
@@ -219,10 +189,10 @@ class SeriesController extends AbstractController
     #[Route('/aVoir/{ep}/{id}/{season}', name: 'aVoir_episode')]
     public function aVoir(ManagerRegistry $doctrine, Episode $ep, Series $serie, EntityManagerInterface $em, Season $season )
     {
+        $em = $doctrine->getManager();
         $seasons = $em
             ->getRepository(Season::class)
             ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
-        $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeEpisode($ep);
@@ -239,11 +209,11 @@ class SeriesController extends AbstractController
     #[Route('/vu/{ep}/{id}/{season}', name: 'vu_episode')]
     public function vu(ManagerRegistry $doctrine,Episode $ep, Series $serie, EntityManagerInterface $em, Season $season )
     {
+        $em = $doctrine->getManager();
         $seasons = $em
             ->getRepository(Season::class)
             ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
 
-        $em = $doctrine->getManager();
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addEpisode($ep);
