@@ -177,5 +177,9 @@
             <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
         {% endif %}
         
+        {% for rating in ratings %}
+            {{ rating.comment }}
+        {% endfor %}
+
     </div>
 {% endblock %}

@@ -7,6 +7,8 @@ use App\Entity\User;
 use App\Entity\Series;
 use App\Form\RatingType;
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,22 +32,28 @@ class RatingController extends AbstractController
     #[Route('/new', name: 'app_rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $time = new \DateTime('@'.strtotime('now'));
+        try {
+            $time = new \DateTime('@'.strtotime('now'));
 
-        $rating = new Rating();
-        $user = $entityManager->getRepository(User::class)->findOneBy(['id'=>$_POST['user']]);
-        $serie = $entityManager->getRepository(Series::class)->findOneBy(['id'=>$_POST['series']]);
+            $rating = new Rating();
+            $user = $entityManager->getRepository(User::class)->findOneBy(['id'=>$_POST['user']]);
+            $serie = $entityManager->getRepository(Series::class)->findOneBy(['id'=>$_POST['series']]);
 
-        $rating->setUser($user);
-        $rating->setSeries($serie);
-        $rating->setComment($_POST['text']);
-        $rating->setValue($_POST['note']);
-        $rating->setDate($time);
+            $rating->setUser($user);
+            $rating->setSeries($serie);
+            $rating->setComment($_POST['text']);
+            $rating->setValue($_POST['note']);
+            $rating->setDate($time);
 
-        $entityManager->persist($rating);
-        $entityManager->flush();
+            $entityManager->persist($rating);
+            $entityManager->flush();
+        } catch(Exception) {
+            $error = "Vous avez déjà commenté cette série";
+            throw new Exception($error);
+        }
 
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
+
         
         /**$form = $this->createForm(RatingType::class, $rating);
         $form->handleRequest($request);

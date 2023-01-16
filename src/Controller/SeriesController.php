@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
+use App\Entity\Rating;
 use App\Repository\EpisodeRepository;
 use App\Repository\RealSeriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -175,6 +176,10 @@ class SeriesController extends AbstractController
             ->getRepository(Season::class)
             ->findBy(array('series'=>$series->getId()), array('number'=>'ASC'));
 
+        $ratings = $entityManager
+            ->getRepository(Rating::class)
+            ->findBy(['series'=>$series->getId()], ['date'=>'DESC']);
+
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
 
@@ -182,7 +187,8 @@ class SeriesController extends AbstractController
             'series' => $series,
             'seasons' => $seasons,
             'episode' => $episode,
-            'currentSeason' => $season
+            'currentSeason' => $season,
+            'ratings' => $ratings
         ]);
     }
 
