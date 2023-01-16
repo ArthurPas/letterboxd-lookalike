@@ -39,23 +39,18 @@
         }
     </style>
     <div class="contain">
-        <div class="profil">
-            <div class="profil-info">
-            <h1>Profil : {{ user.name }}</h1>
-            <h6>{{ user.email }} | {{ user.country }} </h6>
-            <h6>Inscrit depuis : {{ user.registerDate|date('d/m/Y') }}</h6>
-            <a href="{{path('app_user_edit',{'userID': user.id})}}">Editer mon profil</a>
-            <a href="{{path('app_mdp_edit',{'userID': user.id})}}">Nouveau mot de passe</a>
-            </div>
-
-            <h2>Séries suivies</h2>
-
-
-            {% for series in user.series %}
-               <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}">{{series.showPoster}}</a>
+        <form method="GET" action="{{path('app_user_ficheUtilisateur',{'userID':user.id})}}">
+        <label>Nom</label>
+        <input type="text" name="nom" value="{{ user.name }}">
+        <label>Pays</label>
+        <select class="form-control" name="pays">
+            <option value="{{ user.country }}">{{ user.country }}</option>
+            {% for pays in pays %}
+            <option value="{{ pays.name }}"> {{ pays.name }} </option>
             {% endfor %}
-
-            </div>
-        </div>
+        </select>
+        <input type="submit">
+        </form>
+    </div>
     </contain>
 {% endblock %}
