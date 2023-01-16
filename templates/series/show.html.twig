@@ -8,6 +8,10 @@
             color: white;
         }
 
+        .rating {
+            color: black;
+        }
+
         .contain{
             margin-left: 5%;
             margin-right: 5%;
@@ -153,6 +157,25 @@
             </a>
         {% endif %}
         
+        <form action={{path('app_rating_new')}} method="POST" class="rating">
+            <input type="text" name="text">
+            <select name="note">
+                <option value=0>0</option>
+                <option value=0.5>0.5</option>
+                <option value=1>1</option>
+                <option value=1.5>1.5</option>
+                <option value=2>2</option>
+                <option value=2.5>2.5</option>
+                <option value=3>3</option>
+                <option value=3.5>3.5</option>
+                <option value=4>4</option>
+                <option value=4.5>4.5</option>
+                <option value=5>5</option>
+            </select>
+            <input type="text" value={{app.user.id}} name="user" hidden=true>
+            <input type="text" value={{series.id}} name="series" hidden=true>
+            <input type="submit">
+        </form>
         
         {% if app.user %}
             <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
@@ -160,5 +183,9 @@
             <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
         {% endif %}
         
+        {% for rating in ratings %}
+            {{ rating.comment }}
+        {% endfor %}
+
     </div>
 {% endblock %}

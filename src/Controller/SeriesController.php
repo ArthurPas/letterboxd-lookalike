@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
+use App\Entity\Rating;
 use App\Repository\EpisodeRepository;
 use App\Repository\RealSeriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -167,13 +168,17 @@ class SeriesController extends AbstractController
 
  
     
-    #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
+    #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET', 'POST'])]
     public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     {
         $em = $doctrine->getManager();
         $seasons = $entityManager
             ->getRepository(Season::class)
             ->findBy(array('series'=>$series->getId()), array('number'=>'ASC'));
+
+        $ratings = $entityManager
+            ->getRepository(Rating::class)
+            ->findBy(['series'=>$series->getId()], ['date'=>'DESC']);
 
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
@@ -182,7 +187,8 @@ class SeriesController extends AbstractController
             'series' => $series,
             'seasons' => $seasons,
             'episode' => $episode,
-            'currentSeason' => $season
+            'currentSeason' => $season,
+            'ratings' => $ratings
         ]);
     }
 
