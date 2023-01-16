@@ -167,7 +167,7 @@ class SeriesController extends AbstractController
 
  
     
-    #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
+    #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET', 'POST'])]
     public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     {
         $em = $doctrine->getManager();
