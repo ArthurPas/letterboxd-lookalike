@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <style>
+        *{
+            color: white;
+        }
+
+        .contain{
+            margin-left: 5%;
+            margin-right: 5%;
+            padding: 15px;
+            padding-top: 5px;
+            padding-bottom: 15px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .profil-info{
+            margin-bottom: 30px;
+        }
+
+        .profil{
+            margin: 30px;
+        }
+        
+        img{
+            width: 180px;
+            height: 250px;
+            margin: 10px;
+        }
+
+        #mon-profil-clr{
+            color: #c82333;
+        }
+            
+        #mon-profil-clr:hover{
+            font-weight: bold;
+        }
+    </style>
+    <div class="contain">
+        <form method="GET" action="{{path('app_user_ficheUtilisateur',{'userID':user.id})}}">
+        <label>Nom</label>
+        <input type="text" name="nom" value="{{ user.name }}">
+        <label>Pays</label>
+        <select class="form-control" name="pays">
+            <option value="{{ user.country }}">{{ user.country }}</option>
+            {% for pays in pays %}
+            <option value="{{ pays.name }}"> {{ pays.name }} </option>
+            {% endfor %}
+        </select>
+        <input type="submit">
+        </form>
+    </div>
+    </contain>
+{% endblock %}

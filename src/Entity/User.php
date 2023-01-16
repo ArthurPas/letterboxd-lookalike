@@ -289,4 +289,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials() { 
 
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

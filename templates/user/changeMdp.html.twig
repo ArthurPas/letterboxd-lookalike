@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <style>
+        *{
+            color: white;
+        }
+
+        .contain{
+            margin-left: 5%;
+            margin-right: 5%;
+            padding: 15px;
+            padding-top: 5px;
+            padding-bottom: 15px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .profil-info{
+            margin-bottom: 30px;
+        }
+
+        .profil{
+            margin: 30px;
+        }
+        
+        img{
+            width: 180px;
+            height: 250px;
+            margin: 10px;
+        }
+
+        #mon-profil-clr{
+            color: #c82333;
+        }
+            
+        #mon-profil-clr:hover{
+            font-weight: bold;
+        }
+    </style>
+    <h1>{{ nonValide }}</h1>
+    <div class="contain">
+        <form method="POST" action="{{path('app_user_ficheUtilisateur',{'userID':user.id})}}">
+        <label>Nouveau mot de passe</label>
+        <input type="text" name="nouveauMdp" require>
+        <label>confirmation</label>
+        <input type="text" name="confirmation" require>
+        <input type="submit">
+        </form>
+    </div>
+    </contain>
+{% endblock %}

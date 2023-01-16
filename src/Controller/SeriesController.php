@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
+use App\Entity\Rating;
 use App\Repository\EpisodeRepository;
 use App\Repository\RealSeriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -136,13 +137,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeSeries($serie);
         $em->flush();
-        return $this->render('series/show.html.twig', [
-            'series' => $serie,
-            'seasons' => $seasons,
-            'episode' => $episode,
-            'user' => $this->getUser(),
-            'currentSeason' => $season
-        ]);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
     }
 
     #[Route('/suivre/{id}/{season}', name: 'suivre_serie')]
@@ -156,24 +151,22 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addSeries($serie);
         $em->flush();
-        return $this->render('series/show.html.twig', [
-            'series' => $serie,
-            'seasons' => $seasons,
-            'episode' => $episode,
-            'user' => $this->getUser(),
-            'currentSeason' => $season
-        ]);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
     }
 
  
     
-    #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET'])]
+    #[Route('/{id}/{season}', name: 'app_series_show', methods: ['GET', 'POST'])]
     public function show(ManagerRegistry $doctrine, EpisodeRepository $repository, Series $series, EntityManagerInterface $entityManager, Season $season): Response
     {
         $em = $doctrine->getManager();
         $seasons = $entityManager
             ->getRepository(Season::class)
             ->findBy(array('series'=>$series->getId()), array('number'=>'ASC'));
+
+        $ratings = $entityManager
+            ->getRepository(Rating::class)
+            ->findBy(['series'=>$series->getId()], ['date'=>'DESC']);
 
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
@@ -182,7 +175,8 @@ class SeriesController extends AbstractController
             'series' => $series,
             'seasons' => $seasons,
             'episode' => $episode,
-            'currentSeason' => $season
+            'currentSeason' => $season,
+            'ratings' => $ratings
         ]);
     }
 
@@ -197,13 +191,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeEpisode($ep);
         $em->flush();
-        return $this->render('series/show.html.twig', [
-            'series' => $serie,
-            'seasons' => $seasons,
-            'episode' => $episode,
-            'user' => $this->getUser(),
-            'currentSeason' => $season
-        ]);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
     }
 
     #[Route('/vu/{ep}/{id}/{season}', name: 'vu_episode')]
@@ -217,6 +205,7 @@ class SeriesController extends AbstractController
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addEpisode($ep);
+        $this->getUser()->addSeries($serie);
         $em->flush();
         return $this->render('series/show.html.twig', [
             'series' => $serie,
@@ -225,5 +214,22 @@ class SeriesController extends AbstractController
             'user' => $this->getUser(),
             'currentSeason' => $season
         ]);
+    }
+
+    #[Route('/vu/{id}/{season}', name: 'tout_les_episode_vus')]
+    public function ToutMarquerVu(ManagerRegistry $doctrine, Series $serie, EntityManagerInterface $em, Season $season )
+    {
+        $em = $doctrine->getManager();
+        $seasons = $em
+            ->getRepository(Season::class)
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
+
+        $repository = $em->getRepository(Episode::class);
+        $episode = $repository->findEpisodes($serie->getId(), $season->getId());
+        foreach ($episode as $ep){
+            $this->getUser()->addEpisode($ep);
+        }
+        $em->flush();
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
     }
 }
