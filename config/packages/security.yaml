@@ -35,6 +35,7 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/user/list, roles: ROLE_ADMIN }
+        - { path: ^/user, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/series/suivre, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/series/suppr, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/series/vu, roles: [ROLE_ADMIN, ROLE_USER] }
