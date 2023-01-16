@@ -207,13 +207,7 @@ class SeriesController extends AbstractController
         $this->getUser()->addEpisode($ep);
         $this->getUser()->addSeries($serie);
         $em->flush();
-        return $this->render('series/show.html.twig', [
-            'series' => $serie,
-            'seasons' => $seasons,
-            'episode' => $episode,
-            'user' => $this->getUser(),
-            'currentSeason' => $season
-        ]);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
     }
 
     #[Route('/vu/{id}/{season}', name: 'tout_les_episode_vus')]
