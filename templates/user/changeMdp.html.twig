@@ -7,8 +7,8 @@
         }
 
         .contain{
-            margin-left: 5%;
-            margin-right: 5%;
+            margin-left: 30%;
+            margin-right: 30%;
             padding: 15px;
             padding-top: 5px;
             padding-bottom: 15px;
@@ -37,15 +37,19 @@
         #mon-profil-clr:hover{
             font-weight: bold;
         }
+
+        .form-control {
+            margin-bottom: 10px;
+        }
     </style>
     <h1>{{ nonValide }}</h1>
     <div class="contain">
         <form method="POST" action="{{path('app_user_ficheUtilisateur',{'userID':user.id})}}">
-        <label>Nouveau mot de passe</label>
-        <input type="text" name="nouveauMdp" require>
-        <label>confirmation</label>
-        <input type="text" name="confirmation" require>
-        <input type="submit">
+        <label>Nouveau mot de passe : </label>
+        <input class="form-control"  type="text" name="nouveauMdp" require>
+        <label>Confirmation du nouveau mot de passe :</label>
+        <input class="form-control" type="text" name="confirmation" require>
+        <input class="form-control btn-secondary btn-lg"" type="submit" value="Modifier les informations du profil">
         </form>
     </div>
     </contain>

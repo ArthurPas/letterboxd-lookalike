@@ -7,8 +7,8 @@
         }
 
         .contain{
-            margin-left: 5%;
-            margin-right: 5%;
+            margin-left: 30%;
+            margin-right: 30%;
             padding: 15px;
             padding-top: 5px;
             padding-bottom: 15px;
@@ -37,19 +37,28 @@
         #mon-profil-clr:hover{
             font-weight: bold;
         }
+
+        .form-control {
+            margin-bottom: 10px;
+        }
+
+        .form-control btn {
+            width: 50px;
+        }
+
     </style>
     <div class="contain">
         <form method="GET" action="{{path('app_user_ficheUtilisateur',{'userID':user.id})}}">
-        <label>Nom</label>
-        <input type="text" name="nom" value="{{ user.name }}">
-        <label>Pays</label>
+        <label>Nom : </label>
+        <input class="form-control" type="text" name="nom" value="{{ user.name }}">
+        <label>Pays : </label>
         <select class="form-control" name="pays">
             <option value="{{ user.country }}">{{ user.country }}</option>
             {% for pays in pays %}
             <option value="{{ pays.name }}"> {{ pays.name }} </option>
             {% endfor %}
         </select>
-        <input type="submit">
+        <input class="form-control btn-secondary btn-lg" type="submit" value="Modifier les informations du profil ">
         </form>
     </div>
     </contain>
