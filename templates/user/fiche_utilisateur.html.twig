@@ -28,6 +28,14 @@
             width: 180px;
             height: 250px;
             margin: 10px;
+            transition: 0.5s;
+        }
+
+        img:hover{
+            width: 200px;
+            height: 270px;
+            margin: 10px;
+            transition: 0.5s;
         }
 
         #mon-profil-clr{
@@ -45,12 +53,13 @@
             <h6>{{ user.email }} | {{ user.country }} </h6>
             <h6>Inscrit depuis : {{ user.registerDate|date('d/m/Y') }}</h6>
             </div>
+            
+
 
             <h2>Séries suivies</h2>
-
-
+            
             {% for series in user.series %}
-               <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}">{{series.showPoster}}</a>
+                <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}">{{series.showPoster}}</a>
             {% endfor %}
 
             </div>
