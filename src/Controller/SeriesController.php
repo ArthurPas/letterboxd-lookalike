@@ -137,13 +137,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeSeries($serie);
         $em->flush();
-        return $this->render('series/show.html.twig', [
-            'series' => $serie,
-            'seasons' => $seasons,
-            'episode' => $episode,
-            'user' => $this->getUser(),
-            'currentSeason' => $season
-        ]);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
     }
 
     #[Route('/suivre/{id}/{season}', name: 'suivre_serie')]
@@ -157,13 +151,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addSeries($serie);
         $em->flush();
-        return $this->render('series/show.html.twig', [
-            'series' => $serie,
-            'seasons' => $seasons,
-            'episode' => $episode,
-            'user' => $this->getUser(),
-            'currentSeason' => $season
-        ]);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
     }
 
  
@@ -203,13 +191,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeEpisode($ep);
         $em->flush();
-        return $this->render('series/show.html.twig', [
-            'series' => $serie,
-            'seasons' => $seasons,
-            'episode' => $episode,
-            'user' => $this->getUser(),
-            'currentSeason' => $season
-        ]);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
     }
 
     #[Route('/vu/{ep}/{id}/{season}', name: 'vu_episode')]
@@ -248,12 +230,6 @@ class SeriesController extends AbstractController
             $this->getUser()->addEpisode($ep);
         }
         $em->flush();
-        return $this->render('series/show.html.twig', [
-            'series' => $serie,
-            'seasons' => $seasons,
-            'episode' => $episode,
-            'user' => $this->getUser(),
-            'currentSeason' => $season
-        ]);
+        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
     }
 }
