@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Country;
+use App\Entity\Rating;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,7 +61,9 @@ class UserController extends AbstractController
         $repository = $em->getRepository(User::class);
         $user = $repository->findOneBy(['id' => $userID]);
         $repositoryCountry = $em->getRepository(Country::class);
-        
+        $ratings = $entityManager
+            ->getRepository(Rating::class)
+            ->getRatingById($userID);
         if(isset($_GET['nom'])){
             $user->setName($_GET['nom']);
         }
@@ -86,6 +89,7 @@ class UserController extends AbstractController
         
         return $this->render('user/fiche_utilisateur.html.twig', [
             'user' => $user,
+            'mesAvis' => $ratings
         ]); 
     }
     #[Route('/editer/{userID}', name: 'app_user_edit', methods: ['GET', 'POST'])]
