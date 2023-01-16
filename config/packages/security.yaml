@@ -33,7 +33,10 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/user/list, roles: ROLE_ADMIN }
-        - { path: ^/series, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/series/suivre, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/series/suppr, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/series/vu, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/series/aVoir, roles: [ROLE_ADMIN, ROLE_USER] }
 
 
 when@test:
