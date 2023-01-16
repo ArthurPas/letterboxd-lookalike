@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Country;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,11 +58,33 @@ class UserController extends AbstractController
     {
         $em = $doctrine->getManager();
         $repository = $em->getRepository(User::class);
-
         $user = $repository->findOneBy(['id' => $userID]);
-
+        $repositoryCountry = $em->getRepository(Country::class);
+        
+        if(isset($_GET['nom'])){
+            $user->setName($_GET['nom']);
+        }
+        if(isset($_GET['pays'])){
+            $pays = $repositoryCountry->findOneByName($_GET['pays']);
+            $user->setCountry($pays);
+        }
+        $em->flush();
         return $this->render('user/fiche_utilisateur.html.twig', [
             'user' => $user,
+        ]); 
+    }
+    #[Route('/editer/{userID}', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    public function editer(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $userID): Response
+    {
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(User::class);
+
+        $user = $repository->findOneBy(['id' => $userID]);
+        $repositoryCountry = $em->getRepository(Country::class);
+        $pays = $repositoryCountry->findAll();
+        return $this->render('user/editer.html.twig', [
+            'user' => $user,
+            'pays' =>$pays
         ]); 
     }
 }
