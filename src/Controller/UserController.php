@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/user')]
 class UserController extends AbstractController
 {
@@ -54,7 +54,7 @@ class UserController extends AbstractController
     }   
 
     #[Route('/{userID}', name: 'app_user_ficheUtilisateur', methods: ['GET', 'POST'])]
-    public function ficheUtilisateur(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $userID): Response
+    public function ficheUtilisateur(ManagerRegistry $doctrine,UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, User $userID): Response
     {
         $em = $doctrine->getManager();
         $repository = $em->getRepository(User::class);
@@ -68,7 +68,22 @@ class UserController extends AbstractController
             $pays = $repositoryCountry->findOneByName($_GET['pays']);
             $user->setCountry($pays);
         }
-        $em->flush();
+        if(isset($_POST['nouveauMdp']) && isset($_POST['confirmation']) ){
+            if($_POST['confirmation'] != $_POST['nouveauMdp']){
+                return $this->render('user/changeMdp.html.twig', [
+                    'user' => $user,
+                    'nonValide' => "Mot de passe pas identique",
+                ]); 
+            }
+            else{
+                $user->setPassword($userPasswordHasher->hashPassword($user,$_POST['nouveauMdp']));
+                $em->flush();
+                return $this->render('user/fiche_utilisateur.html.twig', [
+                    'user' => $user,
+                ]);   
+            }   
+        }
+        
         return $this->render('user/fiche_utilisateur.html.twig', [
             'user' => $user,
         ]); 
@@ -85,6 +100,18 @@ class UserController extends AbstractController
         return $this->render('user/editer.html.twig', [
             'user' => $user,
             'pays' =>$pays
+        ]); 
+    }
+    #[Route('/nouveauMdp/{userID}', name: 'app_mdp_edit', methods: ['GET', 'POST'])]
+    public function motDePasse(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $userID): Response
+    {
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(User::class);
+        $user = $repository->findOneBy(['id' => $userID]);
+        
+        return $this->render('user/changeMdp.html.twig', [
+            'user' => $user,
+            'nonValide' => ""
         ]); 
     }
 }

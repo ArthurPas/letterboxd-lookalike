@@ -38,24 +38,15 @@
             font-weight: bold;
         }
     </style>
+    <h1>{{ nonValide }}</h1>
     <div class="contain">
-        <div class="profil">
-            <div class="profil-info">
-            <h1>Profil : {{ user.name }}</h1>
-            <h6>{{ user.email }} | {{ user.country }} </h6>
-            <h6>Inscrit depuis : {{ user.registerDate|date('d/m/Y') }}</h6>
-            <a href="{{path('app_user_edit',{'userID': user.id})}}">Editer mon profil</a>
-            <a href="{{path('app_mdp_edit',{'userID': user.id})}}">Nouveau mot de passe</a>
-            </div>
-
-            <h2>Séries suivies</h2>
-
-
-            {% for series in user.series %}
-               <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}">{{series.showPoster}}</a>
-            {% endfor %}
-
-            </div>
-        </div>
+        <form method="POST" action="{{path('app_user_ficheUtilisateur',{'userID':user.id})}}">
+        <label>Nouveau mot de passe</label>
+        <input type="text" name="nouveauMdp" require>
+        <label>confirmation</label>
+        <input type="text" name="confirmation" require>
+        <input type="submit">
+        </form>
+    </div>
     </contain>
 {% endblock %}
