@@ -164,7 +164,29 @@
             background: #c82333;
         }
 
+        .message_suspendu{
+            margin-left: 30px;
+            color: red;
+            font-size: xxx-large;
+        }
+
+        .suspendu{
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            height: 150%;
+            width: 100%;
+            align-items: center;
+        }
     </style>
+    {% if app.user is defined and app.user.banni is defined %}
+        {% if app.user.banni == 1 %}
+            <div class="contain suspendu">
+                <h1 class="message_suspendu"> Compte Suspendu</h1>
+            </div>
+        {% endif %}
+    {% endif %}
+    
     <div class="contain">
     <h1>Découvrir</h1>
 
