@@ -217,6 +217,7 @@ class SeriesController extends AbstractController
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addEpisode($ep);
+        $this->getUser()->addSeries($serie);
         $em->flush();
         return $this->render('series/show.html.twig', [
             'series' => $serie,
