@@ -32,12 +32,14 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/user/list, roles: ROLE_ADMIN }
         - { path: ^/series/suivre, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/series/suppr, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/series/vu, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/series/aVoir, roles: [ROLE_ADMIN, ROLE_USER] }
-        
+
 when@test:
     security:
         password_hashers:
