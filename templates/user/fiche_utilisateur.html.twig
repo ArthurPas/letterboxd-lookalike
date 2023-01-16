@@ -45,7 +45,7 @@
             <h6>{{ user.email }} | {{ user.country }} </h6>
             <h6>Inscrit depuis : {{ user.registerDate|date('d/m/Y') }}</h6>
             <a href="{{path('app_user_edit',{'userID': user.id})}}">Editer mon profil</a>
-            <a href="{{path('app_mdp_edit',{'userID': user.id})}}">Changer mon mot de passe</a>
+
             </div>
 
             <h2>Séries suivies</h2>
