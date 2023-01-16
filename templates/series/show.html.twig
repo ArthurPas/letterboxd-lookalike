@@ -164,10 +164,7 @@
                 
             </ol>  
         </div>
-
-        
-        
-        
+        {% if app.user %}
         <form action={{path('app_rating_new')}} method="POST" class="rating">
             <input type="text" name="text">
             <select name="note">
@@ -187,7 +184,7 @@
             <input type="text" value={{series.id}} name="series" hidden=true>
             <input type="submit">
         </form>
-        
+        {% endif %}
         {% if app.user %}
             <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
         {% else %}
