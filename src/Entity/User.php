@@ -64,6 +64,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $admin = '0';
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="banni", type="boolean", nullable=false)
+     */
+    private $banni = '0';
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="user_id", type="string", length=128, nullable=true)
@@ -185,6 +192,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getBanni(): ?bool
+    {
+        return $this->banni;
+    }
+
+    public function setBanni(bool $banni): self
+    {
+        $this->banni = $banni;
+
+        return $this;
+    }
+
     public function getUserId(): ?string
     {
         return $this->userId;
@@ -262,6 +281,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array {
         if($this->admin == 1){
             return ['ROLE_ADMIN'];
+        } else if ($this->banni == 1){
+            return ['ROLE_BANNI'];
         }
         return ['ROLE_USER'];
     }

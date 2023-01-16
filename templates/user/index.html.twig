@@ -76,6 +76,7 @@
                     <th>Date d'inscription</th>
                     <th>Admin</th>
                     <th>Pays</th>
+                    <th>Status</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -89,7 +90,21 @@
                     <td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ user.admin ? 'Yes' : 'No' }}</td>
                     <td>{{ user.country }}</td>
+                    {% for role in user.roles %}
+                        {% if role != "ROLE_BANNI" %}
+                            <td>Actif</td>
+                        {% else %}
+                            <td>Suspendu</td>
+                        {% endif %}
+                    {% endfor %}
                     <td><a href="{{ path('app_series_index', {'_switch_user': user.email}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Incarner</a></td>
+                    {% for role in user.roles %}
+                        {% if role != "ROLE_BANNI" %}
+                                <td><a href="{{ path("app_user_ban", {userID : user.id}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">suspendre</a></td>
+                        {% else %}
+                                <td><a href="{{ path("app_user_ban", {userID : user.id}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">reactiver</a></td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
         
             {% else %}
