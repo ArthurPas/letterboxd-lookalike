@@ -224,7 +224,7 @@
                     
                 </ol>  
             </div>
-
+            {% if app.user %}
             <h2> Ajouter un avis </h2>
             <div class="ajout-avis">
                 <form id="form-avis"action={{path('app_rating_new')}} method="POST" class="rating">
@@ -247,7 +247,7 @@
                     <input class="btn btn-info btn-lg" role="button" aria-disabled="true" type="submit" value="Ajouter" style="color: white;">
                 </form>
             </div>
-
+            {% endif %}
             <br>
 
             <h2> Avis des utilisateurs sur "{{series.title}}" </h2>
