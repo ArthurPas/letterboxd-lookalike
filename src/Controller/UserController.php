@@ -88,6 +88,23 @@ class UserController extends AbstractController
             'user' => $user,
         ]); 
     }
+
+    #[Route('/list/{userID}', name: 'app_user_ban', methods: ['GET', 'POST'])]
+    public function bannir(ManagerRegistry $doctrine, EntityManagerInterface $entityManager,PaginatorInterface $paginator, Request $request, User $userID): Response
+    {
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(User::class);
+        $userABannir = $repository->findOneBy(['id' => $userID]);
+        if ($userABannir->getBanni() == 0){
+            $userABannir->setBanni(1);
+        }
+        else {
+            $userABannir->setBanni(0);
+        }
+        $entityManager->persist($userABannir);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_user_index');
+    } 
     #[Route('/editer/{userID}', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function editer(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $userID): Response
     {
