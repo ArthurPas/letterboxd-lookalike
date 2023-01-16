@@ -227,4 +227,27 @@ class SeriesController extends AbstractController
             'currentSeason' => $season
         ]);
     }
+
+    #[Route('/vu/{id}/{season}', name: 'tout_les_episode_vus')]
+    public function ToutMarquerVu(ManagerRegistry $doctrine, Series $serie, EntityManagerInterface $em, Season $season )
+    {
+        $em = $doctrine->getManager();
+        $seasons = $em
+            ->getRepository(Season::class)
+            ->findBy(array('series'=>$serie->getId()), array('number'=>'ASC'));
+
+        $repository = $em->getRepository(Episode::class);
+        $episode = $repository->findEpisodes($serie->getId(), $season->getId());
+        foreach ($episode as $ep){
+            $this->getUser()->addEpisode($ep);
+        }
+        $em->flush();
+        return $this->render('series/show.html.twig', [
+            'series' => $serie,
+            'seasons' => $seasons,
+            'episode' => $episode,
+            'user' => $this->getUser(),
+            'currentSeason' => $season
+        ]);
+    }
 }
