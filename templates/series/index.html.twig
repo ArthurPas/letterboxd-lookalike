@@ -178,7 +178,9 @@
             width: 100%;
             align-items: center;
         }
+
     </style>
+
     {% if app.user is defined and app.user.banni is defined %}
         {% if app.user.banni == 1 %}
             <div class="contain suspendu">
@@ -198,6 +200,13 @@
                         <option value="">Genre</option>
                         {% for genres in genre %}
                         <option value="{{ genres.name }}"> {{ genres.name }} </option>
+                        {% endfor %}
+                    </select>
+
+                    <select class="form-control" name="rating">
+                        <option value="">-- Toutes les notes --</option>
+                        {% for i in 0..10 %}
+                        <option value="{{ i / 2 }}">{{ i / 2 }}</option>
                         {% endfor %}
                     </select>
                     <input class="form-control btn-secondary btn-lg" type="submit" value="Rechercher"/>
