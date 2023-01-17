@@ -102,6 +102,11 @@
 
     <div class="contain">
         <h1>{{ series.title }}</h1>
+
+        {% if app.user.admin =='Yes' %}
+            <a href="{{ path('app_series_edit', {seriesId : series.id})}}">editer</a>
+        {% endif %}
+
         <div class="ecart">
             <p> Série • 
             {% for genre in series.genre %} 

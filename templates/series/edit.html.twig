@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer series{% endblock %}
+
+{% block body %}
+
+
+<div>
+    <form method="POST" action="{{path('app_series_show',{'id': serie.id, 'season': 1})}}">
+    
+        <label>Titre de la série</label>
+        <input type="text" name="titreSerie" value="{{ serie.title }}">
+
+        <label>Plot</label>
+        <input type="text" name="plotSerie" value="{{ serie.plot }}">
+
+        <label>Date de debut de la série</label>
+        <input type="text" name="dateDebut" value="{{ serie.yearStart }}">
+
+        <label>Date de fin de la série</label>
+        <input type="text" name="dateFin" value="{{ serie.yearEnd }}">
+
+        <label>imdb<label>
+        <input type="text" name="imdbSerie" value="{{ serie.imdb }}">
+
+        <label>awards</label>
+        <input type="text" name="awardsSerie" value="{{ serie.awards }}">
+
+        <!--
+
+        </br>
+        <label>Ajouter un épisode</label>
+        </br>
+        
+        <label>titre de l'épisode</label>
+        <input type="text" name="titreEpisode">
+
+        <label>Numéro de la saison</label>
+        <input type="number" name="numeroSaison" min="1" >
+
+        </br>
+        -->
+
+        <input type="submit">
+    </form>
+</div>
+
+
+
+{% endblock %}
