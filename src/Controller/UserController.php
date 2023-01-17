@@ -65,10 +65,12 @@ class UserController extends AbstractController
             ->getRatingById($userID);
         if(isset($_GET['nom'])){
             $user->setName($_GET['nom']);
+            $em->flush();
         }
         if(isset($_GET['pays'])){
             $pays = $repositoryCountry->findOneByName($_GET['pays']);
             $user->setCountry($pays);
+            $em->flush();
         }
         if(isset($_POST['nouveauMdp']) && isset($_POST['confirmation']) ){
             if($_POST['confirmation'] != $_POST['nouveauMdp']){
