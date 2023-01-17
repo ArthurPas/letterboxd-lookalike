@@ -125,6 +125,23 @@ class SeriesController extends AbstractController
         ]);
     }
 
+    #[Route('/edit/{seriesId}', name: 'app_series_edit')]
+    public function editerSerie(ManagerRegistry $doctrine, EntityManagerInterface $em, Series $seriesId)
+    {
+        
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Series::class);
+
+        $serie = $repository->findOneBy(['id' => $seriesId]);
+        
+        
+        return $this->render('series/edit.html.twig', [
+            'serie' => $serie,
+
+
+        ]);
+    }
+
     #[Route('/suppr/{id}/{season}', name: 'suppr_serie')]
     public function suivre(ManagerRegistry $doctrine, Series $serie, EntityManagerInterface $em, Season $season )
     {
@@ -182,6 +199,42 @@ class SeriesController extends AbstractController
 
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
+
+        
+        if (isset($_POST['titreSerie'])) {
+            $series->setTitle($_POST['titreSerie']);
+        }
+        
+
+        if (isset($_POST['plotSerie'])) {
+            $series->setPlot($_POST['plotSerie']);
+        }
+
+        if (isset($_POST['dateDebut'])) {
+            $series->setYearStart(intval($_POST['dateDebut']));
+        }
+
+        if (isset($_POST['dateFin'])) {
+            $series->setYearEnd(intval($_POST['dateFin']));
+        }
+
+        if (isset($_POST['imdbSerie'])) {
+            $series->setImdb($_POST['imdbSerie']);
+        }
+
+        if (isset($_POST['awardsSerie'])) {
+            $series->setAwards($_POST['awardsSerie']);
+        }
+
+        if (isset($_POST['posterSerie'])) {
+            $series->setPoster($_POST['posterSerie']);
+        }
+
+        if (isset($_POST['genreSerie'])) {
+            $series->setPoster($_POST['genresSerie']);
+        }
+
+        $em->flush();
 
         return $this->render('series/show.html.twig', [
             'series' => $series,
@@ -256,4 +309,6 @@ class SeriesController extends AbstractController
             'currentSeason' => $season
         ]);
     }
+
+    
 }

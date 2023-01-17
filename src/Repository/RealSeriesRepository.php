@@ -97,4 +97,5 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
+
 }
