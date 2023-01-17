@@ -19,6 +19,9 @@ Pour ce faire aller dans le dossier où vous avez cloné le dépot puis lancer l
 ## Se connecter au serveur 
 Pour se connecter aller dans votre navigateur puis taper dans l'url 127.0.0.1:8080/series
 
+## Base de donnée 
+Télecharger le .zip de la base de donnée et l'importer dans PhpMyAdmin
+
 ## Utilisateur admin
 Pour creer un utilisateur admin il faut aller dans PhpMyAdmin se connecter à votre base et dans la table user modifier le 0 de votre profil dans l'attribut admin par un 1
 
