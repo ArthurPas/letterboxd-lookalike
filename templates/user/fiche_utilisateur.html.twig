@@ -100,7 +100,24 @@
             <a href="{{path('app_mdp_edit',{'userID': user.id})}}" class="btn btn-secondary btn-lg" role="button">Nouveau mot de passe</a>
             </div>
 
-            <h2>Séries suivies</h2>
+
+            {% set i = 0 %}
+            {% for serie in user.series %}
+                {% set i = i + 1 %}
+            {% endfor %}
+
+            {% if i < 1 %}
+                <h2>
+                <a href="{{ path('app_series_index', {'userID' : app.user})}}">Partir à la découverte de nouvelle série
+                </h2>
+            {% elseif i == 1 %}
+                <h2>Série suivie</h2>
+            {% else %}
+                <h2>Séries suivies</h2>
+            {% endif %}
+
+
+            <!--<h2>Séries suivies</h2>-->
             
             {% for series in user.series %}
                 <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}">{{series.showPoster}}</a>
