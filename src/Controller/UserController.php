@@ -32,7 +32,6 @@ class UserController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             8 // Nombre de résultats par page
             );
-
         return $this->render('user/index.html.twig', [
             'users' => $usersPagines,
         ]);
@@ -83,6 +82,7 @@ class UserController extends AbstractController
                 $em->flush();
                 return $this->render('user/fiche_utilisateur.html.twig', [
                     'user' => $user,
+                    'mesAvis' => $ratings
                 ]);   
             }   
         }
