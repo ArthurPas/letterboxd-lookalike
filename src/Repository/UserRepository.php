@@ -30,24 +30,4 @@ class UserRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
-    /*
-    public function editNameUser($nom, $user){
-        $this->createQueryBuilder('u')
-        ->update(User::class, 'u')
-        ->where('u.id = :user')
-        ->set('u.name',$nom)
-        ->setParameters(array('user'=> $user))
-        ->getQuery()
-        ->execute();
-    }
-    public function editCountryUser($country, $user){
-        $this->createQueryBuilder('u')
-        ->update(User::class, 'u')
-        ->where('u.id = :user')
-        ->set('u.country',$country)
-        ->setParameters(array('user'=> $user))
-        ->getQuery()
-        ->execute();
-    }
-    */
 }

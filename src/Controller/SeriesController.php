@@ -6,6 +6,7 @@ use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Entity\Rating;
+use App\Entity\User;
 use App\Repository\EpisodeRepository;
 use App\Repository\RealSeriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,16 +44,21 @@ class SeriesController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
             );
-        if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre'])){
+        if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre']) || isset($_GET['rating'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
-            $genre = $_GET['genre'];   
+            $genre = $_GET['genre'];
+            $rating = $_GET['rating'];
+
             if (empty($genre)) {
                 $seriesCherchees = $entityManager
                 ->getRepository(Series::class)
                 ->rechercheSansGenre($initiale,$annee);
-            
-                //$em = $doctrine->getManager();
+                if(!empty($rating)){
+                    $seriesCherchees = $entityManager
+                    ->getRepository(Rating::class)
+                    ->rechercheSerieNote($rating);
+                }
                 $repository = $em->getRepository(Series::class);
                 $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -64,29 +70,36 @@ class SeriesController extends AbstractController
                     'genre' => $genres,
                     'series' => $seriesAAfficher,
                     'seriesSuivies' => $seriesSuivies,
+                    'rating' => $rating,
                 ]);
             }else{
                 $idGenre = $entityManager
-            ->getRepository(Series::class)
-            ->genreVersId($genre);
-            $seriesCherchees = $entityManager
-            ->getRepository(Series::class)
-            ->rechercheAvecGenre($initiale,$annee,$idGenre);
-            //$em = $doctrine->getManager();
-            $nb=$repository->findNbSerie();
-            $repository = $em->getRepository(Series::class);
-            $seriesAAfficher = $paginator->paginate(
+                ->getRepository(Series::class)
+                ->genreVersId($genre);
+                $seriesCherchees = $entityManager
+                ->getRepository(Series::class)
+                ->rechercheAvecGenre($initiale,$annee,$idGenre);
+                if(!empty($rating)){
+                    $seriesCherchees = $entityManager
+                    ->getRepository(Rating::class)
+                    ->rechercheSerieNote($rating);
+                }
+                $nb=$repository->findNbSerie();
+                $repository = $em->getRepository(Series::class);
+                $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
-            );
-            return $this->render('series/index.html.twig', [
-                'series' => $seriesCherchees,
-                'genre' => $genres,
-                'series' => $seriesAAfficher,
-                'seriesSuivies' => $seriesSuivies,
-            ]); 
+                );
+
+                return $this->render('series/index.html.twig', [
+                    'series' => $seriesCherchees,
+                    'genre' => $genres,
+                    'series' => $seriesAAfficher,
+                    'seriesSuivies' => $seriesSuivies,
+                ]); 
             }
+
             $idGenre = $entityManager
             ->getRepository(Series::class)
             ->genreVersId($genre);
@@ -101,6 +114,7 @@ class SeriesController extends AbstractController
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
             );
+           
             return $this->render('series/index.html.twig', [
                 'series' => $seriesCherchees,
                 'genre' => $genres,
@@ -109,6 +123,7 @@ class SeriesController extends AbstractController
                 // last username entered by the usersSuivies,
             ]);     
         }
+
         $series = $entityManager
             ->getRepository(Series::class)
             ->findALl();
@@ -134,6 +149,23 @@ class SeriesController extends AbstractController
         ]);
     }
 
+    #[Route('/edit/{seriesId}', name: 'app_series_edit')]
+    public function editerSerie(ManagerRegistry $doctrine, EntityManagerInterface $em, Series $seriesId)
+    {
+        
+        $em = $doctrine->getManager();
+        $repository = $em->getRepository(Series::class);
+
+        $serie = $repository->findOneBy(['id' => $seriesId]);
+        
+        
+        return $this->render('series/edit.html.twig', [
+            'serie' => $serie,
+
+
+        ]);
+    }
+
     #[Route('/suppr/{id}/{season}', name: 'suppr_serie')]
     public function suivre(ManagerRegistry $doctrine, Series $serie, EntityManagerInterface $em, Season $season )
     {
@@ -146,7 +178,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeSeries($serie);
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>1]);
     }
 
     #[Route('/suivre/{id}/{season}', name: 'suivre_serie')]
@@ -160,7 +192,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addSeries($serie);
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>1]);
     }
 
  
@@ -175,13 +207,45 @@ class SeriesController extends AbstractController
 
         $ratings = $entityManager
             ->getRepository(Rating::class)
-            ->findBy(['series'=>$series->getId()], ['date'=>'DESC']);
-
+            ->findBy(array('series'=>$series->getId()), array('value' => 'ASC', 'date' => 'DESC'));
+        
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
-
         $tabTotaux = $this->totaux($ratings);
+        
+        if (isset($_POST['titreSerie'])) {
+            $series->setTitle($_POST['titreSerie']);
+        }
+        
 
+        if (isset($_POST['plotSerie'])) {
+            $series->setPlot($_POST['plotSerie']);
+        }
+
+        if (isset($_POST['dateDebut'])) {
+            $series->setYearStart(intval($_POST['dateDebut']));
+        }
+
+        if (isset($_POST['dateFin'])) {
+            $series->setYearEnd(intval($_POST['dateFin']));
+        }
+
+        if (isset($_POST['imdbSerie'])) {
+            $series->setImdb($_POST['imdbSerie']);
+        }
+
+        if (isset($_POST['awardsSerie'])) {
+            $series->setAwards($_POST['awardsSerie']);
+        }
+
+        if (isset($_POST['posterSerie'])) {
+            $series->setPoster($_POST['posterSerie']);
+        }
+
+        if (isset($_POST['genreSerie'])) {
+            $series->setPoster($_POST['genresSerie']);
+        }
+        $em->flush();
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $seasons,
@@ -203,7 +267,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeEpisode($ep);
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>$season->getId()]);
     }
 
     #[Route('/vu/{ep}/{id}/{season}', name: 'vu_episode')]
@@ -219,7 +283,7 @@ class SeriesController extends AbstractController
         $this->getUser()->addEpisode($ep);
         $this->getUser()->addSeries($serie);
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>$season->getId()]);
     }
 
     #[Route('/vu/{id}/{season}', name: 'tout_les_episode_vus')]
@@ -236,6 +300,8 @@ class SeriesController extends AbstractController
             $this->getUser()->addEpisode($ep);
         }
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>$season->getId()]);
     }
+
+    
 }

@@ -32,7 +32,6 @@ class UserController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             8 // Nombre de résultats par page
             );
-
         return $this->render('user/index.html.twig', [
             'users' => $usersPagines,
         ]);
@@ -66,10 +65,12 @@ class UserController extends AbstractController
             ->getRatingById($userID);
         if(isset($_GET['nom'])){
             $user->setName($_GET['nom']);
+            $em->flush();
         }
         if(isset($_GET['pays'])){
             $pays = $repositoryCountry->findOneByName($_GET['pays']);
             $user->setCountry($pays);
+            $em->flush();
         }
         if(isset($_POST['nouveauMdp']) && isset($_POST['confirmation']) ){
             if($_POST['confirmation'] != $_POST['nouveauMdp']){
@@ -83,6 +84,7 @@ class UserController extends AbstractController
                 $em->flush();
                 return $this->render('user/fiche_utilisateur.html.twig', [
                     'user' => $user,
+                    'mesAvis' => $ratings
                 ]);   
             }   
         }

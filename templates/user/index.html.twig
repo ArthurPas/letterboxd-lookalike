@@ -58,13 +58,21 @@
             transition: 0.2s;
         }
 
+        .textPopUp{
+            color: black;
+        }
+
+        .current{
+            border: 2px solid #c82333;
+            background: #c82333;
+        }
     </style>
     <div class="contain">
         <h1 class="user-title">Liste des utilisateurs</h1>
         <div class="rechercheParMail">
             <form method='POST'>
-                <input type='text' name='mail' placeholder="Email">
-                <input type='submit' value='Rechercher' href='app_user_index'>
+                <input class="form-control" type='text' name='mail' placeholder="Email" style="color: black; margin-bottom: 5px;">
+                <input class="btn btn-secondary" type='submit' value='Rechercher' href='app_user_index'>
             </form>
         </div>
         <table class="table">
@@ -97,16 +105,39 @@
                             <td>Suspendu</td>
                         {% endif %}
                     {% endfor %}
+                    <td>
+                    <a href="{{ path('app_mdp_edit', {'userID': user.id}) }}" class="btn btn-primary btn-lg" role="button" aria-disabled="true">Reinitialiser mot de passe</a>
+                    </td>
                     <td><a href="{{ path('app_series_index', {'_switch_user': user.email}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Incarner</a></td>
                     {% for role in user.roles %}
                         {% if role != "ROLE_BANNI" %}
-                                <td><a href="{{ path("app_user_ban", {userID : user.id}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">suspendre</a></td>
+                                <td>
+                                <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#exampleModal">
+                                    Bannir
+                                </button>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                            <p class="textPopUp">Etes-vous sûr de vouloir suspendre ce compte ? </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                                            <a href="{{ path("app_user_ban", {userID : user.id}) }}" type="button" class="btn btn-primary">Oui</a>
+                                    </div>
+                                    </div>
+                                </div>
+                                </td>
                         {% else %}
-                                <td><a href="{{ path("app_user_ban", {userID : user.id}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">reactiver</a></td>
+                                <td><a href="{{ path("app_user_ban", {userID : user.id}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Débannir</a></td>
                         {% endif %}
                     {% endfor %}
                 </tr>
-        
+                
             {% else %}
                 <tr>
                     <td colspan="8">no records found</td>
