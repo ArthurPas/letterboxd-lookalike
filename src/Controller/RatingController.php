@@ -49,24 +49,10 @@ class RatingController extends AbstractController
             $entityManager->flush();
         } catch(Exception) {
             $error = "Vous avez déjà commenté cette série";
-            throw new Exception($error);
+            return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>1]);
         }
 
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
-
-        
-        /**$form = $this->createForm(RatingType::class, $rating);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            
-        }
-
-        return $this->renderForm('rating/new.html.twig', [
-            'rating' => $rating,
-            'form' => $form,
-        ]);*/
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>1]);
     }
 
     #[Route('/{id}', name: 'app_rating_show', methods: ['GET'])]
