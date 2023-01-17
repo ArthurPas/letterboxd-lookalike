@@ -29,6 +29,20 @@ class SeriesController extends AbstractController
 
         return array_reverse($tabTotaux);
     }
+
+    public function compterSuiveur($user) {
+        return count($user);
+    }
+
+    public function totalNotes($ratings) {
+        $somme = 0;
+
+        foreach ($ratings as $rating) {
+            $somme += $rating->getValue();
+        }
+
+        return $somme;
+    }
     
     #[Route('/', name: 'app_series_index', methods: ['POST','GET'])]
     public function catalogue(ManagerRegistry $doctrine,RealSeriesRepository $repository, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
@@ -212,6 +226,13 @@ class SeriesController extends AbstractController
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
         $tabTotaux = $this->totaux($ratings);
+        $nombreSuiveur = $this->compterSuiveur($series->getUser());
+        $notes = $this->totalNotes($ratings);
+        $total = count($ratings);
+
+        if ($total == 0) {
+            $total = 1;
+        }
         
         if (isset($_POST['titreSerie'])) {
             $series->setTitle($_POST['titreSerie']);
@@ -252,7 +273,10 @@ class SeriesController extends AbstractController
             'episode' => $episode,
             'currentSeason' => $season,
             'ratings' => $ratings,
-            'tabTotaux' => $tabTotaux
+            'moyenne' => $notes / $total,
+            'total' => $total,
+            'tabTotaux' => $tabTotaux,
+            'nombreSuiveur' => $nombreSuiveur
         ]);
     }
 
