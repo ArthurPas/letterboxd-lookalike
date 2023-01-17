@@ -88,7 +88,53 @@
             transition: 0.5s;
         }
 
+        .date-ratings{
+            font-size : 15px; 
+            margin-bottom: 10px;
+        }
 
+        @media (-webkit-min-device-pixel-ratio: 2){
+            .contains {
+                justify-content : center;
+            }
+            
+            h1 {
+                font-size: 5em;
+                text-align: center;
+            }
+
+            h2{
+                font-size: 3em;
+            }
+
+            h6{
+                font-size: 2em;
+            }
+            
+            .profil a{
+                font-size: 2.5em;
+            }
+
+            img{
+                width: 220px;
+                height: 290px;
+            }
+            
+            h4{ 
+                font-size: 2em;
+            }
+            
+            .container-avis-case p{
+                font-size: 2em;
+                border-radius: 5px;
+                border: 5px solid grey;
+            }
+
+            .date-ratings{
+                font-size : 1.5em; 
+                margin-bottom: 10px;
+            }
+        }
     </style>
     <div class="contain">
         <div class="profil">
@@ -98,7 +144,7 @@
             <h6>Inscrit depuis : {{ user.registerDate|date('d/m/Y') }}</h6>
             <a href="{{path('app_user_edit',{'userID': user.id})}}" class="btn btn-secondary btn-lg" role="button">Éditer mon profil</a>
             <a href="{{path('app_mdp_edit',{'userID': user.id})}}" class="btn btn-secondary btn-lg" role="button">Nouveau mot de passe</a>
-            </div>
+        </div>
 
 
             {% set i = 0 %}
@@ -115,9 +161,6 @@
             {% else %}
                 <h2>Séries suivies</h2>
             {% endif %}
-
-
-            <!--<h2>Séries suivies</h2>-->
             
             {% for series in user.series %}
                 <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}">{{series.showPoster}}</a>
@@ -140,7 +183,7 @@
                                 </svg>
                                 {{ rating.value }}
                             </h4>
-                            <div style="font-size : 15px; margin-bottom: 10px;">{{ rating.date|date('d/m/Y à H:m')}}</div>
+                            <div class="date-ratings">{{ rating.date|date('d/m/Y à H:m')}}</div>
                             
                             <p>{{ rating.comment }}</p>
                             

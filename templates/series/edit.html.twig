@@ -3,46 +3,69 @@
 {% block title %}Editer series{% endblock %}
 
 {% block body %}
+<style>
 
+    *{
+        color: white;
+    }
 
-<div>
-    <form method="POST" action="{{path('app_series_show',{'id': serie.id, 'season': 1})}}">
+    .contain{
+        margin-left: 5%;
+        margin-right: 5%;
+        padding: 15px;
+        padding-top: 5px;
+        padding-bottom: 15px;
+        border-radius: 5px;
+        background-color: rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1 {
+        color: white;
+        margin: 30px;
+    }
     
-        <label>Titre de la série</label>
-        <input type="text" name="titreSerie" value="{{ serie.title }}">
+    .ecart {
+        margin-left : 30px;
+    }
 
-        <label>Plot</label>
-        <input type="text" name="plotSerie" value="{{ serie.plot }}">
+    input, textarea{
+        color: black;
+        margin-bottom: 10px;
+    }
 
-        <label>Date de debut de la série</label>
-        <input type="text" name="dateDebut" value="{{ serie.yearStart }}">
+    label{
+        font-weight: bold;
+    }
+</style>
 
-        <label>Date de fin de la série</label>
-        <input type="text" name="dateFin" value="{{ serie.yearEnd }}">
-
-        <label>imdb<label>
-        <input type="text" name="imdbSerie" value="{{ serie.imdb }}">
-
-        <label>awards</label>
-        <input type="text" name="awardsSerie" value="{{ serie.awards }}">
-
-        <!--
-
-        </br>
-        <label>Ajouter un épisode</label>
-        </br>
+<div class="contain">
+    <h1>Modifier la page {{ serie.title }}</h1>
+    <div class="ecart">
+        <form method="POST" action="{{path('app_series_show',{'id': serie.id, 'season': 1})}}">
         
-        <label>titre de l'épisode</label>
-        <input type="text" name="titreEpisode">
+            <label for="titreSerie">Titre de la série</label>
+            <input type="text" class="form-control" id="titreSerie" name="titreSerie" value="{{ serie.title }}" required>
+            
+            <label for="plotSerie">Plot</label>
+            <textarea class="form-control" id="plotSerie" name="plotSerie">{{ serie.plot }}</textarea>
 
-        <label>Numéro de la saison</label>
-        <input type="number" name="numeroSaison" min="1" >
+            <label for="dateDebut">Date de debut de la série</label>
+            <input type="text" class="form-control" id="dateDebut" name="dateDebut" value="{{ serie.yearStart }}" required>
 
-        </br>
-        -->
+            <label for="dateFin">Date de fin de la série</label>
+            <input type="text" class="form-control" id="dateFin" name="dateFin" value="{{ serie.yearEnd }}">
 
-        <input type="submit">
-    </form>
+            <label for="imdbSerie">Valeur imdb</label>
+            <input type="text" class="form-control" id="imdbSerie" name="imdbSerie" value="{{ serie.imdb }}">
+
+            <label for="awardsSerie">Awards</label>
+            <input type="text" class="form-control" id="awardsSerie" name="awardsSerie" value="{{ serie.awards }}">
+
+            <input type="submit" class="btn btn-danger btn-lg" role="button" aria-disabled="true" value="Modifier">
+        </form>
+    </div>
 </div>
 
 

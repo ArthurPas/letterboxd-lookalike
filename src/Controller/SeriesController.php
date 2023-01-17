@@ -20,6 +20,29 @@ use Knp\Component\Pager\PaginatorInterface;
 #[Route('/series')]
 class SeriesController extends AbstractController
 {
+    public function totaux($ratings) {
+        $tabTotaux = array_fill(0, 11, 0);
+
+        foreach ($ratings as $rating) {
+            $tabTotaux[$rating->getValue() * 2] += 1;
+        }
+
+        return array_reverse($tabTotaux);
+    }
+
+    public function compterSuiveur($user) {
+        return count($user);
+    }
+
+    public function totalNotes($ratings) {
+        $somme = 0;
+
+        foreach ($ratings as $rating) {
+            $somme += $rating->getValue();
+        }
+
+        return $somme;
+    }
     
     #[Route('/', name: 'app_series_index', methods: ['POST','GET'])]
     public function catalogue(ManagerRegistry $doctrine,RealSeriesRepository $repository, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
@@ -35,16 +58,21 @@ class SeriesController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
             );
-        if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre'])){
+        if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre']) || isset($_GET['rating'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
-            $genre = $_GET['genre'];   
+            $genre = $_GET['genre'];
+            $rating = $_GET['rating'];
+
             if (empty($genre)) {
                 $seriesCherchees = $entityManager
                 ->getRepository(Series::class)
                 ->rechercheSansGenre($initiale,$annee);
-            
-                //$em = $doctrine->getManager();
+                if(!empty($rating)){
+                    $seriesCherchees = $entityManager
+                    ->getRepository(Rating::class)
+                    ->rechercheSerieNote($rating);
+                }
                 $repository = $em->getRepository(Series::class);
                 $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -56,29 +84,36 @@ class SeriesController extends AbstractController
                     'genre' => $genres,
                     'series' => $seriesAAfficher,
                     'seriesSuivies' => $seriesSuivies,
+                    'rating' => $rating,
                 ]);
             }else{
                 $idGenre = $entityManager
-            ->getRepository(Series::class)
-            ->genreVersId($genre);
-            $seriesCherchees = $entityManager
-            ->getRepository(Series::class)
-            ->rechercheAvecGenre($initiale,$annee,$idGenre);
-            //$em = $doctrine->getManager();
-            $nb=$repository->findNbSerie();
-            $repository = $em->getRepository(Series::class);
-            $seriesAAfficher = $paginator->paginate(
+                ->getRepository(Series::class)
+                ->genreVersId($genre);
+                $seriesCherchees = $entityManager
+                ->getRepository(Series::class)
+                ->rechercheAvecGenre($initiale,$annee,$idGenre);
+                if(!empty($rating)){
+                    $seriesCherchees = $entityManager
+                    ->getRepository(Rating::class)
+                    ->rechercheSerieNote($rating);
+                }
+                $nb=$repository->findNbSerie();
+                $repository = $em->getRepository(Series::class);
+                $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
-            );
-            return $this->render('series/index.html.twig', [
-                'series' => $seriesCherchees,
-                'genre' => $genres,
-                'series' => $seriesAAfficher,
-                'seriesSuivies' => $seriesSuivies,
-            ]); 
+                );
+
+                return $this->render('series/index.html.twig', [
+                    'series' => $seriesCherchees,
+                    'genre' => $genres,
+                    'series' => $seriesAAfficher,
+                    'seriesSuivies' => $seriesSuivies,
+                ]); 
             }
+
             $idGenre = $entityManager
             ->getRepository(Series::class)
             ->genreVersId($genre);
@@ -93,6 +128,7 @@ class SeriesController extends AbstractController
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
             );
+           
             return $this->render('series/index.html.twig', [
                 'series' => $seriesCherchees,
                 'genre' => $genres,
@@ -101,6 +137,7 @@ class SeriesController extends AbstractController
                 // last username entered by the usersSuivies,
             ]);     
         }
+
         $series = $entityManager
             ->getRepository(Series::class)
             ->findALl();
@@ -188,7 +225,14 @@ class SeriesController extends AbstractController
         
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
+        $tabTotaux = $this->totaux($ratings);
+        $nombreSuiveur = $this->compterSuiveur($series->getUser());
+        $notes = $this->totalNotes($ratings);
+        $total = count($ratings);
 
+        if ($total == 0) {
+            $total = 1;
+        }
         
         if (isset($_POST['titreSerie'])) {
             $series->setTitle($_POST['titreSerie']);
@@ -222,15 +266,17 @@ class SeriesController extends AbstractController
         if (isset($_POST['genreSerie'])) {
             $series->setPoster($_POST['genresSerie']);
         }
-
         $em->flush();
-
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $seasons,
             'episode' => $episode,
             'currentSeason' => $season,
-            'ratings' => $ratings
+            'ratings' => $ratings,
+            'moyenne' => $notes / $total,
+            'total' => $total,
+            'tabTotaux' => $tabTotaux,
+            'nombreSuiveur' => $nombreSuiveur
         ]);
     }
 

@@ -61,13 +61,18 @@
         .textPopUp{
             color: black;
         }
+
+        .current{
+            border: 2px solid #c82333;
+            background: #c82333;
+        }
     </style>
     <div class="contain">
         <h1 class="user-title">Liste des utilisateurs</h1>
         <div class="rechercheParMail">
             <form method='POST'>
-                <input type='text' name='mail' placeholder="Email">
-                <input type='submit' value='Rechercher' href='app_user_index'>
+                <input class="form-control" type='text' name='mail' placeholder="Email" style="color: black; margin-bottom: 5px;">
+                <input class="btn btn-secondary" type='submit' value='Rechercher' href='app_user_index'>
             </form>
         </div>
         <table class="table">
@@ -108,7 +113,7 @@
                         {% if role != "ROLE_BANNI" %}
                                 <td>
                                 <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#exampleModal">
-                                    suspendre
+                                    Bannir
                                 </button>
                                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -128,7 +133,7 @@
                                 </div>
                                 </td>
                         {% else %}
-                                <td><a href="{{ path("app_user_ban", {userID : user.id}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">reactiver</a></td>
+                                <td><a href="{{ path("app_user_ban", {userID : user.id}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Débannir</a></td>
                         {% endif %}
                     {% endfor %}
                 </tr>
