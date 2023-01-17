@@ -19,6 +19,15 @@ use Knp\Component\Pager\PaginatorInterface;
 #[Route('/series')]
 class SeriesController extends AbstractController
 {
+    public function totaux($ratings) {
+        $tabTotaux = array_fill(0, 11, 0);
+
+        foreach ($ratings as $rating) {
+            $tabTotaux[$rating->getValue() * 2] += 1;
+        }
+
+        return array_reverse($tabTotaux);
+    }
     
     #[Route('/', name: 'app_series_index', methods: ['POST','GET'])]
     public function catalogue(ManagerRegistry $doctrine,RealSeriesRepository $repository, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
@@ -171,12 +180,15 @@ class SeriesController extends AbstractController
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
 
+        $tabTotaux = $this->totaux($ratings);
+
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $seasons,
             'episode' => $episode,
             'currentSeason' => $season,
-            'ratings' => $ratings
+            'ratings' => $ratings,
+            'tabTotaux' => $tabTotaux
         ]);
     }
 
