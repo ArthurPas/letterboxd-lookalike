@@ -161,7 +161,23 @@
             </div>
 
             <br>
-            
+
+            {% set i = 0 %}
+            {% for user in series.user %}
+                {% set i = i + 1 %}
+            {% endfor %}
+
+            {% if i < 1 %}
+                <h4> Aucun utilisateur ne suit cette série actuellement</h4>
+            {% elseif i == 1 %}
+                <h4> <b>1</b> utilisateur suit actuellement cette série</h4>
+            {% else %}
+                <h4> {{i}} utilisateurs suivent actuellement cette série </h4>
+            {% endif %}
+
+            <br>
+
+
             <div class="saisons">
                 <h2> Saisons </h2>
                 

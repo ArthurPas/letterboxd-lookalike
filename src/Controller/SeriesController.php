@@ -6,6 +6,7 @@ use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Entity\Rating;
+use App\Entity\User;
 use App\Repository\EpisodeRepository;
 use App\Repository\RealSeriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
