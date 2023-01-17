@@ -101,6 +101,20 @@
     </style>
 
     <div class="contain">
+        {% set somme = 0 %}
+        {% set total = 0 %}
+        
+        {% for rating in ratings %}
+            {% set somme = somme + rating.value %}
+            {% set total = total + 1 %}
+        {% endfor %}
+
+        {% if total != 0 %}
+            {% set somme = somme / total %}
+        {% endif %}
+
+        <h1> {{ somme }} </h1>
+
         <h1>{{ series.title }}</h1>
         <div class="ecart">
             <p> Série • 
