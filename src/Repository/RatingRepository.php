@@ -30,6 +30,18 @@ class RatingRepository extends ServiceEntityRepository
         return $query;
     }
 
+    public function rechercheSerieNote($rating) {
+        $query = $this->createQueryBuilder('r')
+        ->join('r.series', 's')
+        ->select('s.id, s.title, s.plot, s.imdb, s.poster, s.director, s.youtubeTrailer, s.awards, s.yearStart, s.yearEnd')
+        ->where('r.value = :note')
+        ->groupBy('s.id')
+        ->setParameters(array('note' => $rating))
+        ->getQuery()
+        ->getResult();
+        return $query;
+}
+
 //    /**
 //     * @return Rating[] Returns an array of Rating objects
 //     */

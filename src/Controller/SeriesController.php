@@ -44,11 +44,12 @@ class SeriesController extends AbstractController
             if (empty($genre)) {
                 $seriesCherchees = $entityManager
                 ->getRepository(Series::class)
-                ->rechercheSansGenre($initiale,$annee)
-                ->rechercheRang($rating);
-                //$rating = $entityManager->rechercheParNotes($rating);
-            
-                //$em = $doctrine->getManager();
+                ->rechercheSansGenre($initiale,$annee);
+                if(!empty($rating)){
+                    $seriesCherchees = $entityManager
+                    ->getRepository(Rating::class)
+                    ->rechercheSerieNote($rating);
+                }
                 $repository = $em->getRepository(Series::class);
                 $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -69,7 +70,11 @@ class SeriesController extends AbstractController
                 $seriesCherchees = $entityManager
                 ->getRepository(Series::class)
                 ->rechercheAvecGenre($initiale,$annee,$idGenre);
-                //$em = $doctrine->getManager();
+                if(!empty($rating)){
+                    $seriesCherchees = $entityManager
+                    ->getRepository(Rating::class)
+                    ->rechercheSerieNote($rating);
+                }
                 $nb=$repository->findNbSerie();
                 $repository = $em->getRepository(Series::class);
                 $seriesAAfficher = $paginator->paginate(

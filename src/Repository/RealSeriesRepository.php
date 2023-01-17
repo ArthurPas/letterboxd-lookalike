@@ -98,12 +98,7 @@ class RealSeriesRepository extends ServiceEntityRepository
         return $query;
     }
 
-    public function rechercheRang($rating) {
-        if (!empty($rating)){
-            $query = $this->createQueryBuilder('s')
-            ->where()
-        } 
-    }
+
 
 }
 
