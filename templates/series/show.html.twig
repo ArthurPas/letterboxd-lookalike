@@ -6,6 +6,7 @@
     <style>
 
         @media (-webkit-min-device-pixel-ratio: 2) {
+
             h1 {
                 font-size: 75px;
                 text-align: center;
@@ -57,7 +58,6 @@
 
             h4 {
                 font-size: 28px;
-                text-align: center;
             }
 
             .saisons {
@@ -145,10 +145,22 @@
                 font-size: 40px;
             } 
 
+            .container-avis-case p{
+                font-size: 2em;
+                border-radius: 5px;
+                border: 5px solid grey;
+            }
 
 
+            .date-ratings{
+                font-size : 1.5em; 
+                margin-bottom: 10px;
+            }
 
-
+            .part-util-suivi h4{
+                text-align: center;
+                font-size: 2em;
+            }
 
         }
 
@@ -273,18 +285,6 @@
             margin-right: 10px;
         }
 
-        @media (-webkit-min-device-pixel-ratio: 2){
-            .container-avis-case p{
-                font-size: 2em;
-                border-radius: 5px;
-                border: 5px solid grey;
-            }
-
-            .date-ratings{
-                font-size : 1.5em; 
-                margin-bottom: 10px;
-            }
-        }
     </style>
 
     <div class="contain">
@@ -356,15 +356,16 @@
             </div>
 
             <br>
-
-            {% if nombreSuiveur < 1 %}
-                <h4> Aucun utilisateur ne suit cette série actuellement</h4>
-            {% elseif nombreSuiveur == 1 %}
-                <h4> <b>1</b> utilisateur suit actuellement cette série</h4>
-            {% else %}
-                <h4> {{nombreSuiveur}} utilisateurs suivent actuellement cette série </h4>
-            {% endif %}
-
+            
+            <div class="part-util-suivi">
+                {% if nombreSuiveur < 1 %}
+                    <h4> Aucun utilisateur ne suit cette série actuellement</h4>
+                {% elseif nombreSuiveur == 1 %}
+                    <h4> <b>1</b> utilisateur suit actuellement cette série</h4>
+                {% else %}
+                    <h4> {{nombreSuiveur}} utilisateurs suivent actuellement cette série </h4>
+                {% endif %}
+            </div>
             <br>
 
 
