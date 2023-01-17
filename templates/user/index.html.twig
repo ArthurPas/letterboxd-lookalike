@@ -97,6 +97,9 @@
                             <td>Suspendu</td>
                         {% endif %}
                     {% endfor %}
+                    <td>
+                    <a href="{{ path('app_mdp_edit', {'userID': user.id}) }}" class="btn btn-primary btn-lg" role="button" aria-disabled="true">Reinitialiser mot de passe</a>
+                    </td>
                     <td><a href="{{ path('app_series_index', {'_switch_user': user.email}) }}" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Incarner</a></td>
                     {% for role in user.roles %}
                         {% if role != "ROLE_BANNI" %}
@@ -106,7 +109,7 @@
                         {% endif %}
                     {% endfor %}
                 </tr>
-        
+                
             {% else %}
                 <tr>
                     <td colspan="8">no records found</td>

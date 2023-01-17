@@ -137,7 +137,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeSeries($serie);
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>1]);
     }
 
     #[Route('/suivre/{id}/{season}', name: 'suivre_serie')]
@@ -151,7 +151,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->addSeries($serie);
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/1");
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>1]);
     }
 
  
@@ -191,7 +191,7 @@ class SeriesController extends AbstractController
         $episode = $repository->findEpisodes($serie->getId(), $season->getId());
         $this->getUser()->removeEpisode($ep);
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>$season->getId()]);
     }
 
     #[Route('/vu/{ep}/{id}/{season}', name: 'vu_episode')]
@@ -207,7 +207,7 @@ class SeriesController extends AbstractController
         $this->getUser()->addEpisode($ep);
         $this->getUser()->addSeries($serie);
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>$season->getId()]);
     }
 
     #[Route('/vu/{id}/{season}', name: 'tout_les_episode_vus')]
@@ -224,6 +224,6 @@ class SeriesController extends AbstractController
             $this->getUser()->addEpisode($ep);
         }
         $em->flush();
-        return $this->redirect('http://127.0.0.1:8000/series/'.$serie->getId()."/".$season->getId());
+        return $this->redirectToRoute('app_series_show',['id'=>$serie->getId(),'season'=>$season->getId()]);
     }
 }
