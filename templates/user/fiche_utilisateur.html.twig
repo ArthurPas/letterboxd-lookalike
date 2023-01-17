@@ -50,6 +50,45 @@
             margin-top: 10px;
             font-size: 15px;
         }
+
+        .container-avis-case{
+            padding: 25px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-radius: 5px;
+            background-color: rgba(90, 90, 90, 0.8);
+            margin: 10px;
+        }
+
+        .container-avis-case p{
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid grey;
+            background-color: rgba(95, 95, 95, 0.8);
+        }
+
+        .container-avis {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .container-avis>* {
+            flex: 1 1 40vh;
+        }
+
+        .container-avis-case a{
+            text-decoration: none;
+            color: white;
+            transition: 0.5s;
+        }
+
+        .container-avis-case a:hover{
+            color: rgb(23, 162, 184);
+            transition: 0.5s;
+        }
+
+
     </style>
     <div class="contain">
         <div class="profil">
@@ -66,9 +105,31 @@
             {% for series in user.series %}
                 <a href="{{ path('app_series_show', {'id': series.id, 'season': '1'}) }}">{{series.showPoster}}</a>
             {% endfor %}
-            {% for avis in mesAvis %}
-                {{avis.comment}}
-            {% endfor %}
+
+            <div class="container-avis">
+                    {% for rating in mesAvis %}
+                        <div class="container-avis-case">
+                            <h4>
+                                <a href="{{ path('app_series_show', {'id': rating.series.id, 'season': '1'}) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+                                        <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                                    </svg>
+                                    {{ rating.series.title }}
+                                </a>
+                            </h4>
+                            <h4>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+                                {{ rating.value }}
+                            </h4>
+                            <div style="font-size : 15px; margin-bottom: 10px;">{{ rating.date|date('d/m/Y à H:m')}}</div>
+                            
+                            <p>{{ rating.comment }}</p>
+                            
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </contain>
