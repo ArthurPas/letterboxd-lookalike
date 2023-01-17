@@ -166,8 +166,8 @@ class SeriesController extends AbstractController
 
         $ratings = $entityManager
             ->getRepository(Rating::class)
-            ->findBy(['series'=>$series->getId()], ['date'=>'DESC']);
-
+            ->findBy([], array('value' => 'ASC', 'date' => 'DESC'));
+        
         $repository = $em->getRepository(Episode::class);
         $episode = $repository->findEpisodes($series->getId(), $season->getId());
 
