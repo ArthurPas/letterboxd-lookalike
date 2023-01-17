@@ -132,9 +132,14 @@ class UserController extends AbstractController
         $repository = $em->getRepository(User::class);
         $user = $repository->findOneBy(['id' => $userID]);
         
-        return $this->render('user/changeMdp.html.twig', [
-            'user' => $user,
-            'nonValide' => ""
-        ]); 
+        if ($this->getUser()->getEmail() == $user->getEmail()) {
+            return $this->render('user/changeMdp.html.twig', [
+                'user' => $user,
+                'nonValide' => ""
+            ]); 
+        }
+        else {
+            return $this->redirectToRoute('app_series_index');
+        }
     }
 }

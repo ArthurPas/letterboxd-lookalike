@@ -42,13 +42,14 @@
             margin-bottom: 10px;
         }
     </style>
+
     <h1>{{ nonValide }}</h1>
     <div class="contain">
         <form method="POST" action="{{path('app_user_ficheUtilisateur',{'userID':user.id})}}">
         <label>Nouveau mot de passe : </label>
-        <input class="form-control"  type="password" name="nouveauMdp" require>
+        <input class="form-control"  type="password" name="nouveauMdp" required="required">
         <label>Confirmation du nouveau mot de passe :</label>
-        <input class="form-control" type="password" name="confirmation" require>
+        <input class="form-control" type="password" name="confirmation" required="required">
         <input class="form-control btn-secondary btn-lg" type="submit" value="Modifier les informations du profil">
         </form>
     </div>

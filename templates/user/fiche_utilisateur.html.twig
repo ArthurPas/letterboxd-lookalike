@@ -142,8 +142,10 @@
             <h1>Profil : {{ user.name }}</h1>
             <h6>{{ user.email }} | {{ user.country }} </h6>
             <h6>Inscrit depuis : {{ user.registerDate|date('d/m/Y') }}</h6>
-            <a href="{{path('app_user_edit',{'userID': user.id})}}" class="btn btn-secondary btn-lg" role="button">Éditer mon profil</a>
-            <a href="{{path('app_mdp_edit',{'userID': user.id})}}" class="btn btn-secondary btn-lg" role="button">Nouveau mot de passe</a>
+            {% if app.user.email == user.email %}
+                <a href="{{path('app_user_edit',{'userID': user.id})}}" class="btn btn-secondary btn-lg" role="button">Éditer mon profil</a>
+                <a href="{{path('app_mdp_edit',{'userID': user.id})}}" class="btn btn-secondary btn-lg" role="button">Nouveau mot de passe</a>
+            {% endif %}
         </div>
 
 
