@@ -102,12 +102,14 @@
 
     <div class="contain">
         <h1>{{ series.title }}</h1>
-        {% if app.user %}
-        {% if app.user.admin =='Yes' %}
-            <a href="{{ path('app_series_edit', {seriesId : series.id})}}">editer</a>
-        {% endif %}
-        {% endif %}
         <div class="ecart">
+            {% if app.user %}
+                {% if app.user.admin =='Yes' %}
+                    <a href="{{ path('app_series_edit', {seriesId : series.id})}}" class="btn btn-danger btn-lg" role="button" aria-disabled="true">Modifier la page {{ series.title }}</a>
+                {% endif %}
+            {% endif %}
+            <br>
+            <br>
             <p> Série • 
             {% for genre in series.genre %} 
                 {{ genre.name }} 
