@@ -4,6 +4,158 @@
 
 {% block body %}
     <style>
+
+        @media (-webkit-min-device-pixel-ratio: 2) {
+            h1 {
+                font-size: 75px;
+                text-align: center;
+            }
+
+            p {
+                font-size: 30px;
+                margin-left: 10%;
+                margin-right: 10%;
+            }
+
+            .ecart {
+                margin: 0 !important;
+            }
+
+            .media {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                height: 1600px;
+            }
+
+            img {
+                margin-top: 20px;
+                width: 750px !important;
+                height: auto !important; 
+            }
+
+            .description {
+                font-size: 35px;
+                margin-left: 10%;
+                margin-right: 10%;
+                margin-bottom: 20px;
+            }
+
+            .follow {
+                display: flex;
+                justify-content: center;
+            }
+            
+            .follow .btn {
+                font-size: 50px !important;
+            }
+
+            .follow .bi {
+                width: 45px;
+                height: 45px;
+            }
+
+            h4 {
+                font-size: 28px;
+                text-align: center;
+            }
+
+            .saisons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-evenly;
+                margin: 0 10% 0 10%;
+            }
+
+            .saisons h2 {
+                text-align: center;
+                font-size: 50px;
+                width: 100%;
+                margin-top: 70px;
+                margin-bottom: 15px;
+            }
+
+            .saisons .btn {
+                font-size: 40px;
+            }
+
+            .episodes {
+                margin: 0 10% 0 10%;
+            }
+
+            .episodes h2 {
+                text-align: center;
+                font-size: 50px;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+
+            .episodes .btn {
+                font-size: 39px;
+                margin-bottom: 20px;
+            }
+
+            .episodes li .btn {
+                width: 80px;
+                height: 80px;
+            }
+
+            .episodes li {
+                font-size: 35px !important;
+            }
+        
+            .ecart h2 {
+                font-size: 50px;
+                text-align: center;
+            }
+
+            .rating {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .rating textarea {
+                font-size: 35px;
+                height: 150px;
+            }
+
+            .rating select {
+                display: block;
+                text-align: center;
+                font-size: 2em;
+                width: 100%;
+                height: 2em;
+            }
+
+            .rating input {
+                font-size: 35px;
+            }
+
+            .btn .btn-secondary .btn-lg {
+            }
+
+            .retour {
+                display: flex;
+                width: 100%;
+            }
+
+            .retour a {
+                width: 100%;
+                font-size: 40px;
+            } 
+
+
+
+
+
+
+        }
+
+
+
+
+
         *{
             color: white;
         }
@@ -96,7 +248,18 @@
             color: rgb(23, 162, 184);
             transition: 0.5s;
         }
+        .saisons {
+            margin-top: 30px;
+        }
 
+        .episodes {
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            margin-bottom: 15px;
+            margin-right: 10px;
+        }
         @media (-webkit-min-device-pixel-ratio: 2){
             .container-avis-case p{
                 font-size: 2em;
@@ -212,7 +375,6 @@
 
             <div class="episodes">
                 <h2> Episodes </h2>
-                <p>Marquer tout les episodes</p>
                 <a href={{"/series/vu/#{series.id}/#{currentSeason.id}"}} class="btn btn-info btn-lg" role="button" aria-disabled="true">
                     Marquer tous les épisodes comme lu
                 </a>
@@ -255,7 +417,7 @@
                 </ol>  
             </div>
             {% if app.user %}
-            <h2> Ajouter un avis </h2>
+            <h2 class="avis"> Ajouter un avis </h2>
             <div class="ajout-avis">
                 <form id="form-avis"action={{path('app_rating_new')}} method="POST" class="rating">
                     <textarea class="form-control" id="texte-ajout-avis" placeholder="Très belle série ..." maxlength="600" name="text"></textarea>
@@ -338,12 +500,13 @@
         </div>
 
         
-        
-        {% if app.user %}
-            <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
-        {% else %}
-            <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
-        {% endif %}
+        <div class="retour">
+            {% if app.user %}
+                <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
+            {% else %}
+                <a href="javascript:history.back()" class="btn btn-secondary btn-lg" role="button" aria-disabled="true" style="margin-top: 1vh;">Retour</a>
+            {% endif %}
+        </div>
         
 
         
