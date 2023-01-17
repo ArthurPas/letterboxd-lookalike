@@ -43,7 +43,7 @@ class RealSeriesRepository extends ServiceEntityRepository
     }
     public function rechercheSansGenre($initiale, $annee){
         $query= $this->createQueryBuilder('s')
-        ->join('s.genre', 'g')
+        //->join('s.genre', 'g')
         ->where('s.title like :title')
         ->andWhere('s.yearStart like :year')
         ->setParameters(array('title'=> '%'.$initiale.'%','year' => '%'.$annee.'%'))
@@ -98,4 +98,8 @@ class RealSeriesRepository extends ServiceEntityRepository
         return $query;
     }
 
+
+
 }
+
+

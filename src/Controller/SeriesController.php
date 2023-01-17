@@ -35,16 +35,21 @@ class SeriesController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
             );
-        if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre'])){
+        if(isset($_GET['initiale']) || isset($_GET['annee']) || isset($_GET['genre']) || isset($_GET['rating'])){
             $initiale = $_GET['initiale'];
             $annee = $_GET['annee'];
-            $genre = $_GET['genre'];   
+            $genre = $_GET['genre'];
+            $rating = $_GET['rating'];
+
             if (empty($genre)) {
                 $seriesCherchees = $entityManager
                 ->getRepository(Series::class)
                 ->rechercheSansGenre($initiale,$annee);
-            
-                //$em = $doctrine->getManager();
+                if(!empty($rating)){
+                    $seriesCherchees = $entityManager
+                    ->getRepository(Rating::class)
+                    ->rechercheSerieNote($rating);
+                }
                 $repository = $em->getRepository(Series::class);
                 $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -56,29 +61,36 @@ class SeriesController extends AbstractController
                     'genre' => $genres,
                     'series' => $seriesAAfficher,
                     'seriesSuivies' => $seriesSuivies,
+                    'rating' => $rating,
                 ]);
             }else{
                 $idGenre = $entityManager
-            ->getRepository(Series::class)
-            ->genreVersId($genre);
-            $seriesCherchees = $entityManager
-            ->getRepository(Series::class)
-            ->rechercheAvecGenre($initiale,$annee,$idGenre);
-            //$em = $doctrine->getManager();
-            $nb=$repository->findNbSerie();
-            $repository = $em->getRepository(Series::class);
-            $seriesAAfficher = $paginator->paginate(
+                ->getRepository(Series::class)
+                ->genreVersId($genre);
+                $seriesCherchees = $entityManager
+                ->getRepository(Series::class)
+                ->rechercheAvecGenre($initiale,$annee,$idGenre);
+                if(!empty($rating)){
+                    $seriesCherchees = $entityManager
+                    ->getRepository(Rating::class)
+                    ->rechercheSerieNote($rating);
+                }
+                $nb=$repository->findNbSerie();
+                $repository = $em->getRepository(Series::class);
+                $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
-            );
-            return $this->render('series/index.html.twig', [
-                'series' => $seriesCherchees,
-                'genre' => $genres,
-                'series' => $seriesAAfficher,
-                'seriesSuivies' => $seriesSuivies,
-            ]); 
+                );
+
+                return $this->render('series/index.html.twig', [
+                    'series' => $seriesCherchees,
+                    'genre' => $genres,
+                    'series' => $seriesAAfficher,
+                    'seriesSuivies' => $seriesSuivies,
+                ]); 
             }
+
             $idGenre = $entityManager
             ->getRepository(Series::class)
             ->genreVersId($genre);
@@ -93,6 +105,7 @@ class SeriesController extends AbstractController
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 10 // Nombre de résultats par page
             );
+           
             return $this->render('series/index.html.twig', [
                 'series' => $seriesCherchees,
                 'genre' => $genres,
@@ -101,6 +114,7 @@ class SeriesController extends AbstractController
                 // last username entered by the usersSuivies,
             ]);     
         }
+
         $series = $entityManager
             ->getRepository(Series::class)
             ->findALl();
