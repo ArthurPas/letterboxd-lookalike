@@ -166,18 +166,22 @@ class SeriesController extends AbstractController
     #[Route('/edit/{seriesId}', name: 'app_series_edit')]
     public function editerSerie(ManagerRegistry $doctrine, EntityManagerInterface $em, Series $seriesId)
     {
-        
-        $em = $doctrine->getManager();
-        $repository = $em->getRepository(Series::class);
+        if ($this->getUser()->isAdmin()) {
+            $em = $doctrine->getManager();
+            $repository = $em->getRepository(Series::class);
 
-        $serie = $repository->findOneBy(['id' => $seriesId]);
-        
-        
-        return $this->render('series/edit.html.twig', [
-            'serie' => $serie,
+            $serie = $repository->findOneBy(['id' => $seriesId]);
+            
+            
+            return $this->render('series/edit.html.twig', [
+                'serie' => $serie,
 
 
-        ]);
+            ]);
+        }
+        else {
+            return $this->redirectToRoute('app_series_index');
+        }
     }
 
     #[Route('/suppr/{id}/{season}', name: 'suppr_serie')]
