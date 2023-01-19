@@ -19,7 +19,10 @@ use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
-{
+{   
+    /**
+     * Permet de faire un tableau qui compte combien il y a de notes en fonction de la valeur de la note
+     */
     public function totaux($ratings) {
         $tabTotaux = array_fill(0, 11, 0);
 
@@ -29,11 +32,15 @@ class SeriesController extends AbstractController
 
         return array_reverse($tabTotaux);
     }
-
+    /**
+     * Compte le nombre de follower d'une série
+     */
     public function compterSuiveur($user) {
         return count($user);
     }
-
+    /**
+     * Sommes des notes
+     */
     public function totalNotes($ratings) {
         $somme = 0;
 
@@ -98,7 +105,6 @@ class SeriesController extends AbstractController
                     ->getRepository(Rating::class)
                     ->rechercheSerieNote($rating);
                 }
-                $nb=$repository->findNbSerie();
                 $repository = $em->getRepository(Series::class);
                 $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -121,7 +127,6 @@ class SeriesController extends AbstractController
             ->getRepository(Series::class)
             ->rechercheAvecGenre($initiale,$annee,$idGenre);
             //$em = $doctrine->getManager();
-            $nb=$repository->findNbSerie();
             $repository = $em->getRepository(Series::class);
             $seriesAAfficher = $paginator->paginate(
                 $seriesCherchees, // Requête contenant les données à paginer (ici nos articles)
@@ -144,12 +149,6 @@ class SeriesController extends AbstractController
         
         //$em = $doctrine->getManager();
         $repository = $em->getRepository(Series::class);
-        $nb=$repository->findNbSerie();
-        $dixSeries = [];
-        for($i=0;$i<10;$i++){
-            
-            array_push($dixSeries,$series[rand(0,$nb-1)]);
-        }
         $seriesAAfficher = $paginator->paginate(
             $series, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page

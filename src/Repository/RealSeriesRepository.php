@@ -21,15 +21,9 @@ class RealSeriesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Series::class);
     }
-    public function findNbSerie()
-    {
-        
-        return $this->createQueryBuilder('s')
-        ->select('count(s.id)')
-        ->getQuery()
-        ->getSingleScalarResult();
-        
-    }
+    /**
+     * Requete de recherche avec un critére de genre, de titre et d'année
+     */
     public function rechercheAvecGenre($initiale, $annee, $genre){
         $query= $this->createQueryBuilder('s')
         ->join('s.genre', 'g')
@@ -41,6 +35,9 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult(); 
             return $query;
     }
+    /**
+     * Requete de recherche avec un critére de titre et d'année sans genre
+     */
     public function rechercheSansGenre($initiale, $annee){
         $query= $this->createQueryBuilder('s')
         ->where('s.title like :title')
@@ -50,6 +47,10 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult(); 
         return $query;
     }
+
+    /**
+     * Requete pour obtenir tout les genres
+     */
     public function getAllGenre(){
         $query= $this->createQueryBuilder('s')
         ->join('s.genre', 'g')
@@ -59,6 +60,10 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult(); 
         return $query;
     }
+
+    /**
+     * Requete pour obtenir un id de genre a partir d'un genre
+     */
     public function genreVersId($genre){
         $query= $this->createQueryBuilder('s')
         ->join('s.genre', 'g')
@@ -70,6 +75,10 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
+
+    /**
+     * Requete pour obtenir les série suivi par un utilisateur
+     */
     public function seriesSuivies($user)
     {
         $query= $this->createQueryBuilder('s')
@@ -79,6 +88,9 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
+    /**
+     * Requete pour obtenir tous les id des séries
+     */
     public function getAllId(){
         $query = $this->createQueryBuilder('s')
         ->select('s.id')
@@ -86,6 +98,9 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
+    /**
+     * Requete pour obtenir dix séries
+     */
     public function findDixSeries($un,$deux,$trois,$quatre,$cinq,$six,$sept,$huit,$neuf,$dix){
         $query=$this->createQueryBuilder('s')
         ->where('s.id = :un or s.id = :deux or s.id = :trois or s.id = :quatre or s.id = :cinq or
@@ -96,9 +111,6 @@ class RealSeriesRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
-
-
-
 }
 
 

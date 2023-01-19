@@ -20,7 +20,9 @@ class RatingRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Rating::class);
     }
-
+    /**
+     * Requete pour obtenir un avis par l'id de l'user
+     */
     public function getRatingById($id){
         $query= $this->createQueryBuilder('r')
         ->where(':id = r.user')
@@ -29,7 +31,9 @@ class RatingRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
-
+    /**
+     * Requete de recherche de séries en fonctions de la note des avis
+     */
     public function rechercheSerieNote($rating) {
         $query = $this->createQueryBuilder('r')
         ->join('r.series', 's')
@@ -40,30 +44,5 @@ class RatingRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
         return $query;
-}
-
-//    /**
-//     * @return Rating[] Returns an array of Rating objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Rating
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    }
 }

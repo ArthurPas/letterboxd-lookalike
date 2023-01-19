@@ -21,6 +21,9 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+    /**
+     * Requete qui permet d'obtenir un utilisateur par son email
+     */
     public function findUser($email)
     {
         return $this->createQueryBuilder('u')

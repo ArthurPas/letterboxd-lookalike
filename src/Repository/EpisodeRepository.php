@@ -16,6 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EpisodeRepository extends ServiceEntityRepository
 {
+    /**
+     * Requete pour obtenir tous les épiosdes d'un série grâce a la saison
+     */
     public function findEpisodes($IdSerie, $nb)
     {
         

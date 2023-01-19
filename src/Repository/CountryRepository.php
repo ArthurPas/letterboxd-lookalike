@@ -20,6 +20,9 @@ class CountryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Country::class);
     }
+    /**
+     * Requete pour obtenir tous les nom des pays
+     */
     public function getAllCountry(){
         $query = $this->createQueryBuilder('p')
         ->select('p.name')
@@ -27,30 +30,4 @@ class CountryRepository extends ServiceEntityRepository
         ->getResult();
         return $query;
     }
-
-
-//    /**
-//     * @return Country[] Returns an array of Country objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Country
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

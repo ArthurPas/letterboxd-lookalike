@@ -1,0 +1,142 @@
+CREATE TABLE shows_series(
+   id_serie INT,
+   title VARCHAR(128),
+   plot TEXT,
+   imdb VARCHAR(128),
+   director VARCHAR(255),
+   youtube_trailer VARCHAR(255),
+   awards TEXT,
+   year_start INT,
+   year_end INT,
+   poster INT,
+   PRIMARY KEY(id_serie)
+);
+
+CREATE TABLE shows_country(
+   id_country INT,
+   name VARCHAR(255),
+   PRIMARY KEY(id_country)
+);
+
+CREATE TABLE shows_ratings(
+   id_rating INT,
+   rating_value DECIMAL(15,2),
+   comment TEXT,
+   rating_date DATE,
+   id_serie INT NOT NULL,
+   PRIMARY KEY(id_rating),
+   FOREIGN KEY(id_serie) REFERENCES shows_series(id_serie)
+);
+
+CREATE TABLE shows_season(
+   id_season INT,
+   number INT,
+   id_serie INT NOT NULL,
+   PRIMARY KEY(id_season),
+   FOREIGN KEY(id_serie) REFERENCES shows_series(id_serie)
+);
+
+CREATE TABLE shows_actor(
+   id_actor INT,
+   name VARCHAR(128),
+   PRIMARY KEY(id_actor)
+);
+
+CREATE TABLE shows_genre(
+   id_genre INT,
+   name VARCHAR(128),
+   PRIMARY KEY(id_genre)
+);
+
+CREATE TABLE shows_external_rating_source(
+   id_external_rating_source INT,
+   name VARCHAR(255),
+   PRIMARY KEY(id_external_rating_source)
+);
+
+CREATE TABLE shows_external_rating(
+   id_external_rating INT,
+   external_rating_value VARCHAR(255),
+   votes INT,
+   id_external_rating_source INT NOT NULL,
+   id_serie INT NOT NULL,
+   PRIMARY KEY(id_external_rating),
+   FOREIGN KEY(id_external_rating_source) REFERENCES shows_external_rating_source(id_external_rating_source),
+   FOREIGN KEY(id_serie) REFERENCES shows_series(id_serie)
+);
+
+CREATE TABLE shows_user(
+   id_user INT,
+   name VARCHAR(255),
+   email VARCHAR(255),
+   password VARCHAR(255),
+   register_date DATE,
+   admin BYTE,
+   user_id VARCHAR(255),
+   banni LOGICAL,
+   id_country INT NOT NULL,
+   PRIMARY KEY(id_user),
+   FOREIGN KEY(id_country) REFERENCES shows_country(id_country)
+);
+
+CREATE TABLE shows_episodes(
+   id_episode INT,
+   title VARCHAR(128),
+   episode_date DATE,
+   imdb VARCHAR(128),
+   imdbrating DECIMAL(15,2),
+   number INT,
+   id_season INT NOT NULL,
+   PRIMARY KEY(id_episode),
+   FOREIGN KEY(id_season) REFERENCES shows_season(id_season)
+);
+
+CREATE TABLE shows_user_series(
+   id_serie INT,
+   id_user INT,
+   PRIMARY KEY(id_serie, id_user),
+   FOREIGN KEY(id_serie) REFERENCES shows_series(id_serie),
+   FOREIGN KEY(id_user) REFERENCES shows_user(id_user)
+);
+
+CREATE TABLE shows_country_series(
+   id_serie INT,
+   id_country INT,
+   PRIMARY KEY(id_serie, id_country),
+   FOREIGN KEY(id_serie) REFERENCES shows_series(id_serie),
+   FOREIGN KEY(id_country) REFERENCES shows_country(id_country)
+);
+
+CREATE TABLE shows_user_episode(
+   id_user INT,
+   id_episode INT,
+   PRIMARY KEY(id_user, id_episode),
+   FOREIGN KEY(id_user) REFERENCES shows_user(id_user),
+   FOREIGN KEY(id_episode) REFERENCES shows_episodes(id_episode)
+);
+
+CREATE TABLE shows_actor_series(
+   id_serie INT,
+   id_actor INT,
+   PRIMARY KEY(id_serie, id_actor),
+   FOREIGN KEY(id_serie) REFERENCES shows_series(id_serie),
+   FOREIGN KEY(id_actor) REFERENCES shows_actor(id_actor)
+);
+
+CREATE TABLE shows_genre_series(
+   id_serie INT,
+   id_genre INT,
+   PRIMARY KEY(id_serie, id_genre),
+   FOREIGN KEY(id_serie) REFERENCES shows_series(id_serie),
+   FOREIGN KEY(id_genre) REFERENCES shows_genre(id_genre)
+);
+
+CREATE TABLE est_note(
+   id_user INT,
+   id_rating INT,
+   id VARCHAR(50),
+   PRIMARY KEY(id_user, id_rating),
+   UNIQUE(id),
+   FOREIGN KEY(id_user) REFERENCES shows_user(id_user),
+   FOREIGN KEY(id_rating) REFERENCES shows_ratings(id_rating)
+);
