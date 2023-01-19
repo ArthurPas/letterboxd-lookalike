@@ -120,10 +120,16 @@ class UserController extends AbstractController
         $user = $repository->findOneBy(['id' => $userID]);
         $repositoryCountry = $em->getRepository(Country::class);
         $pays = $repositoryCountry->findAll();
-        return $this->render('user/editer.html.twig', [
-            'user' => $user,
-            'pays' =>$pays
-        ]); 
+        
+        if ($this->getUser()->getEmail() == $user->getEmail() || $this->getUser()->isAdmin()) {
+            return $this->render('user/editer.html.twig', [
+                'user' => $user,
+                'pays' =>$pays
+            ]);
+        }
+        else {
+            return $this->redirectToRoute('app_series_index');
+        }
     }
     #[Route('/nouveauMdp/{userID}', name: 'app_mdp_edit', methods: ['GET', 'POST'])]
     public function motDePasse(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, User $userID): Response
