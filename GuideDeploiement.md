@@ -21,7 +21,11 @@ Pour se connecter aller dans votre navigateur puis taper dans l'url 127.0.0.1:80
 
 ## Base de donnée 
 Télecharger le .zip de la base de donnée et l'importer dans PhpMyAdmin
+
+
 Modifier le fichier .env en ajoutant vos accès à la base
+
+
 Pour des raisons technique de nommage le diagramme MCD n'a pas les mêmes noms que ceux de la base de donnée donc pour voir le script faire 
 > symfony console doctrine:schema:update --dump-sql
 ## Utilisateur admin
